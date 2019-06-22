@@ -1,0 +1,105 @@
+.data
+string_access_violation: .asciiz "Access Violation"
+string_illegal_div_by_0: .asciiz "Division By Zero"
+string_invalid_ptr_dref: .asciiz "Invalid Pointer Dereference"
+Label_0_StringLiteral: .asciiz "main"
+.text
+main:
+	j __main__
+	# Begin error handlers:
+access_violation:
+	li $v0, 4
+	la $a0, string_access_violation
+	syscall
+	li $v0,10
+	syscall
+invalid_pointer:
+	li $v0, 4
+	la $a0, string_invalid_ptr_dref
+	syscall
+	li $v0,10
+	syscall
+__main__:
+	la $t0, Label_0_StringLiteral
+	addi $sp, $sp, -8
+	sw $ra, 4($sp)
+	sub $fp, $fp, $fp
+	sw $fp, 0($sp)
+	move $fp, $sp
+	addi $sp, $sp, -4
+	sw $t0, 0($sp)
+	addi $sp, $sp, -4
+Label_4_prolog_end_main:
+	# func prolog end
+	li $t0,32767
+	sw $t0, -8($fp)
+Label_3_while_statement_start:
+	lw $t0, -8($fp)
+	beq $t0,$zero,Label_2_while_statement_end
+	addi $sp, $sp, -40
+	sw $t0, 0($sp)
+	sw $t1, 4($sp)
+	sw $t2, 8($sp)
+	sw $t3, 12($sp)
+	sw $t4, 16($sp)
+	sw $t5, 20($sp)
+	sw $t6, 24($sp)
+	sw $t7, 28($sp)
+	sw $a0, 32($sp)
+	sw $a1, 36($sp)
+	# Allocating stack for arguments
+	addi $sp, $sp, -4
+	move $a2, $sp
+	lw $t0, -8($fp)
+	move $a0,$t0
+	li $v0,1
+	syscall
+	li $a0,32
+	li $v0,11
+	syscall
+	# Deallocating stack for arguments
+	addi $sp, $sp, 4
+	lw $t0, 0($sp)
+	lw $t1, 4($sp)
+	lw $t2, 8($sp)
+	lw $t3, 12($sp)
+	lw $t4, 16($sp)
+	lw $t5, 20($sp)
+	lw $t6, 24($sp)
+	lw $t7, 28($sp)
+	lw $a0, 32($sp)
+	lw $a1, 36($sp)
+	addi $sp, $sp, 40
+	move $t0, $v0
+	lw $t1, -8($fp)
+	li $t2,2
+	bnez $t2,Label_8_div_by_zero_not
+	li $v0, 4
+	la $a0, string_illegal_div_by_0
+	syscall
+	li $v0,10
+	syscall
+Label_8_div_by_zero_not:
+	div $t0,$t1,$t2
+	mflo $t0
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_6_overflow_max
+	bgt $t2,$t0,Label_7_overflow_min
+	j Label_5_end
+Label_6_overflow_max:
+	li $t0,32767
+	j Label_5_end
+Label_7_overflow_min:
+	li $t0,-32768
+Label_5_end:
+	sw $t0, -8($fp)
+	j Label_3_while_statement_start
+Label_2_while_statement_end:
+Label_1_Func_main_end:
+	addi $sp, $sp, 8
+	lw	$fp, ($sp)
+	lw	$ra, 4($sp)
+	addi $sp, $sp, 8
+	li $v0,10
+	syscall

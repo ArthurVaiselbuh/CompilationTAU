@@ -1,0 +1,10 @@
+int i:=0;
+string gtest := "gtest";
+void main()
+{
+	i:=3;
+	PrintInt(i);
+}
+int foo() {
+	return 5;
+}

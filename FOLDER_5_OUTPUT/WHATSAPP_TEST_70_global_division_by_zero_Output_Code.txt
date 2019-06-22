@@ -1,0 +1,66 @@
+.data
+string_access_violation: .asciiz "Access Violation"
+string_illegal_div_by_0: .asciiz "Division By Zero"
+string_invalid_ptr_dref: .asciiz "Invalid Pointer Dereference"
+Label_0_StringLiteral: .asciiz "main"
+global_i: .word 0
+.text
+main:
+	li $t1,6
+	li $t2,0
+	bnez $t2,Label_5_div_by_zero_not
+	li $v0, 4
+	la $a0, string_illegal_div_by_0
+	syscall
+	li $v0,10
+	syscall
+Label_5_div_by_zero_not:
+	div $t0,$t1,$t2
+	mflo $t0
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_3_overflow_max
+	bgt $t2,$t0,Label_4_overflow_min
+	j Label_2_end
+Label_3_overflow_max:
+	li $t0,32767
+	j Label_2_end
+Label_4_overflow_min:
+	li $t0,-32768
+Label_2_end:
+	la $t1, global_i
+	sw $t0, 0($t1)
+	j __main__
+	# Begin error handlers:
+access_violation:
+	li $v0, 4
+	la $a0, string_access_violation
+	syscall
+	li $v0,10
+	syscall
+invalid_pointer:
+	li $v0, 4
+	la $a0, string_invalid_ptr_dref
+	syscall
+	li $v0,10
+	syscall
+__main__:
+	la $t0, Label_0_StringLiteral
+	addi $sp, $sp, -8
+	sw $ra, 4($sp)
+	sub $fp, $fp, $fp
+	sw $fp, 0($sp)
+	move $fp, $sp
+	addi $sp, $sp, -4
+	sw $t0, 0($sp)
+	addi $sp, $sp, -4
+Label_6_prolog_end_main:
+	# func prolog end
+	sw $zero, -8($fp)
+Label_1_Func_main_end:
+	addi $sp, $sp, 8
+	lw	$fp, ($sp)
+	lw	$ra, 4($sp)
+	addi $sp, $sp, 8
+	li $v0,10
+	syscall

@@ -1,0 +1,17 @@
+class A
+{
+    int val1 := 5;
+    int val2 := 6;
+}
+
+
+void main(){
+    A a := new A;
+    a.val1 := 7;
+
+    A b := new A;
+   	PrintInt(a.val1);
+   	PrintInt(a.val2);
+   	PrintInt(b.val1);
+   	PrintInt(b.val2);
+}

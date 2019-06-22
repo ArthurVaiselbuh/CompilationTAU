@@ -1,0 +1,223 @@
+.data
+string_access_violation: .asciiz "Access Violation"
+string_illegal_div_by_0: .asciiz "Division By Zero"
+string_invalid_ptr_dref: .asciiz "Invalid Pointer Dereference"
+Label_0_StringLiteral: .asciiz "main"
+.text
+main:
+	j __main__
+	# Begin error handlers:
+access_violation:
+	li $v0, 4
+	la $a0, string_access_violation
+	syscall
+	li $v0,10
+	syscall
+invalid_pointer:
+	li $v0, 4
+	la $a0, string_invalid_ptr_dref
+	syscall
+	li $v0,10
+	syscall
+__main__:
+	la $t0, Label_0_StringLiteral
+	addi $sp, $sp, -8
+	sw $ra, 4($sp)
+	sub $fp, $fp, $fp
+	sw $fp, 0($sp)
+	move $fp, $sp
+	addi $sp, $sp, -4
+	sw $t0, 0($sp)
+	addi $sp, $sp, -16
+Label_10_prolog_end_main:
+	# func prolog end
+	li $t0,2
+	sw $t0, -8($fp)
+Label_3_while_statement_start:
+	lw $t0, -8($fp)
+	li $t2,100
+	li $t3,1
+	add $t1,$t2,$t3
+	li $t2,32767
+	li $t3,-32768
+	blt $t2,$t1,Label_12_overflow_max
+	bgt $t3,$t1,Label_13_overflow_min
+	j Label_11_end
+Label_12_overflow_max:
+	li $t1,32767
+	j Label_11_end
+Label_13_overflow_min:
+	li $t1,-32768
+Label_11_end:
+	blt $t0,$t1,Label_15_AssignOne
+	bge $t0,$t1,Label_16_AssignZero
+Label_15_AssignOne:
+	li $t0, 1
+	j Label_14_end
+Label_16_AssignZero:
+	li $t0, 0
+Label_14_end:
+	beq $t0,$zero,Label_2_while_statement_end
+	li $t0,2
+	sw $t0, -12($fp)
+	li $t0,0
+	sw $t0, -16($fp)
+Label_5_while_statement_start:
+	lw $t0, -12($fp)
+	lw $t1, -8($fp)
+	blt $t0,$t1,Label_18_AssignOne
+	bge $t0,$t1,Label_19_AssignZero
+Label_18_AssignOne:
+	li $t0, 1
+	j Label_17_end
+Label_19_AssignZero:
+	li $t0, 0
+Label_17_end:
+	beq $t0,$zero,Label_4_while_statement_end
+	li $t0,2
+	sw $t0, -20($fp)
+Label_7_while_statement_start:
+	lw $t0, -20($fp)
+	lw $t1, -8($fp)
+	blt $t0,$t1,Label_21_AssignOne
+	bge $t0,$t1,Label_22_AssignZero
+Label_21_AssignOne:
+	li $t0, 1
+	j Label_20_end
+Label_22_AssignZero:
+	li $t0, 0
+Label_20_end:
+	beq $t0,$zero,Label_6_while_statement_end
+	lw $t0, -12($fp)
+	lw $t1, -20($fp)
+	mult $t0,$t1
+	mflo $t0
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_24_overflow_max
+	bgt $t2,$t0,Label_25_overflow_min
+	j Label_23_end
+Label_24_overflow_max:
+	li $t0,32767
+	j Label_23_end
+Label_25_overflow_min:
+	li $t0,-32768
+Label_23_end:
+	lw $t1, -8($fp)
+	beq $t0,$t1,Label_27_AssignOne
+	bne $t0,$t1,Label_28_AssignZero
+Label_27_AssignOne:
+	li $t0, 1
+	j Label_26_end
+Label_28_AssignZero:
+	li $t0, 0
+Label_26_end:
+	beq $t0,$zero,Label_8_if_statement_end
+	li $t0,1
+	sw $t0, -16($fp)
+Label_8_if_statement_end:
+	lw $t1, -20($fp)
+	li $t2,1
+	add $t0,$t1,$t2
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_30_overflow_max
+	bgt $t2,$t0,Label_31_overflow_min
+	j Label_29_end
+Label_30_overflow_max:
+	li $t0,32767
+	j Label_29_end
+Label_31_overflow_min:
+	li $t0,-32768
+Label_29_end:
+	sw $t0, -20($fp)
+	j Label_7_while_statement_start
+Label_6_while_statement_end:
+	lw $t1, -12($fp)
+	li $t2,1
+	add $t0,$t1,$t2
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_33_overflow_max
+	bgt $t2,$t0,Label_34_overflow_min
+	j Label_32_end
+Label_33_overflow_max:
+	li $t0,32767
+	j Label_32_end
+Label_34_overflow_min:
+	li $t0,-32768
+Label_32_end:
+	sw $t0, -12($fp)
+	j Label_5_while_statement_start
+Label_4_while_statement_end:
+	lw $t0, -16($fp)
+	li $t1,0
+	beq $t0,$t1,Label_36_AssignOne
+	bne $t0,$t1,Label_37_AssignZero
+Label_36_AssignOne:
+	li $t0, 1
+	j Label_35_end
+Label_37_AssignZero:
+	li $t0, 0
+Label_35_end:
+	beq $t0,$zero,Label_9_if_statement_end
+	addi $sp, $sp, -40
+	sw $t0, 0($sp)
+	sw $t1, 4($sp)
+	sw $t2, 8($sp)
+	sw $t3, 12($sp)
+	sw $t4, 16($sp)
+	sw $t5, 20($sp)
+	sw $t6, 24($sp)
+	sw $t7, 28($sp)
+	sw $a0, 32($sp)
+	sw $a1, 36($sp)
+	# Allocating stack for arguments
+	addi $sp, $sp, -4
+	move $a2, $sp
+	lw $t0, -8($fp)
+	move $a0,$t0
+	li $v0,1
+	syscall
+	li $a0,32
+	li $v0,11
+	syscall
+	# Deallocating stack for arguments
+	addi $sp, $sp, 4
+	lw $t0, 0($sp)
+	lw $t1, 4($sp)
+	lw $t2, 8($sp)
+	lw $t3, 12($sp)
+	lw $t4, 16($sp)
+	lw $t5, 20($sp)
+	lw $t6, 24($sp)
+	lw $t7, 28($sp)
+	lw $a0, 32($sp)
+	lw $a1, 36($sp)
+	addi $sp, $sp, 40
+	move $t0, $v0
+Label_9_if_statement_end:
+	lw $t1, -8($fp)
+	li $t2,1
+	add $t0,$t1,$t2
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_39_overflow_max
+	bgt $t2,$t0,Label_40_overflow_min
+	j Label_38_end
+Label_39_overflow_max:
+	li $t0,32767
+	j Label_38_end
+Label_40_overflow_min:
+	li $t0,-32768
+Label_38_end:
+	sw $t0, -8($fp)
+	j Label_3_while_statement_start
+Label_2_while_statement_end:
+Label_1_Func_main_end:
+	addi $sp, $sp, 20
+	lw	$fp, ($sp)
+	lw	$ra, 4($sp)
+	addi $sp, $sp, 8
+	li $v0,10
+	syscall

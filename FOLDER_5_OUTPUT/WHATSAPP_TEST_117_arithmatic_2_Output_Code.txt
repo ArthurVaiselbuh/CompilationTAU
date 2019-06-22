@@ -1,0 +1,1209 @@
+.data
+string_access_violation: .asciiz "Access Violation"
+string_illegal_div_by_0: .asciiz "Division By Zero"
+string_invalid_ptr_dref: .asciiz "Invalid Pointer Dereference"
+Label_0_StringLiteral: .asciiz "main"
+.text
+main:
+	j __main__
+	# Begin error handlers:
+access_violation:
+	li $v0, 4
+	la $a0, string_access_violation
+	syscall
+	li $v0,10
+	syscall
+invalid_pointer:
+	li $v0, 4
+	la $a0, string_invalid_ptr_dref
+	syscall
+	li $v0,10
+	syscall
+__main__:
+	la $t0, Label_0_StringLiteral
+	addi $sp, $sp, -8
+	sw $ra, 4($sp)
+	sub $fp, $fp, $fp
+	sw $fp, 0($sp)
+	move $fp, $sp
+	addi $sp, $sp, -4
+	sw $t0, 0($sp)
+	addi $sp, $sp, 0
+Label_2_prolog_end_main:
+	# func prolog end
+	addi $sp, $sp, -40
+	sw $t0, 0($sp)
+	sw $t1, 4($sp)
+	sw $t2, 8($sp)
+	sw $t3, 12($sp)
+	sw $t4, 16($sp)
+	sw $t5, 20($sp)
+	sw $t6, 24($sp)
+	sw $t7, 28($sp)
+	sw $a0, 32($sp)
+	sw $a1, 36($sp)
+	# Allocating stack for arguments
+	addi $sp, $sp, -4
+	move $a2, $sp
+	li $t0,1
+	li $t1,3
+	mult $t0,$t1
+	mflo $t0
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_4_overflow_max
+	bgt $t2,$t0,Label_5_overflow_min
+	j Label_3_end
+Label_4_overflow_max:
+	li $t0,32767
+	j Label_3_end
+Label_5_overflow_min:
+	li $t0,-32768
+Label_3_end:
+	move $a0,$t0
+	li $v0,1
+	syscall
+	li $a0,32
+	li $v0,11
+	syscall
+	# Deallocating stack for arguments
+	addi $sp, $sp, 4
+	lw $t0, 0($sp)
+	lw $t1, 4($sp)
+	lw $t2, 8($sp)
+	lw $t3, 12($sp)
+	lw $t4, 16($sp)
+	lw $t5, 20($sp)
+	lw $t6, 24($sp)
+	lw $t7, 28($sp)
+	lw $a0, 32($sp)
+	lw $a1, 36($sp)
+	addi $sp, $sp, 40
+	move $t0, $v0
+	addi $sp, $sp, -40
+	sw $t0, 0($sp)
+	sw $t1, 4($sp)
+	sw $t2, 8($sp)
+	sw $t3, 12($sp)
+	sw $t4, 16($sp)
+	sw $t5, 20($sp)
+	sw $t6, 24($sp)
+	sw $t7, 28($sp)
+	sw $a0, 32($sp)
+	sw $a1, 36($sp)
+	# Allocating stack for arguments
+	addi $sp, $sp, -4
+	move $a2, $sp
+	li $t0,-1
+	li $t1,3
+	mult $t0,$t1
+	mflo $t0
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_7_overflow_max
+	bgt $t2,$t0,Label_8_overflow_min
+	j Label_6_end
+Label_7_overflow_max:
+	li $t0,32767
+	j Label_6_end
+Label_8_overflow_min:
+	li $t0,-32768
+Label_6_end:
+	move $a0,$t0
+	li $v0,1
+	syscall
+	li $a0,32
+	li $v0,11
+	syscall
+	# Deallocating stack for arguments
+	addi $sp, $sp, 4
+	lw $t0, 0($sp)
+	lw $t1, 4($sp)
+	lw $t2, 8($sp)
+	lw $t3, 12($sp)
+	lw $t4, 16($sp)
+	lw $t5, 20($sp)
+	lw $t6, 24($sp)
+	lw $t7, 28($sp)
+	lw $a0, 32($sp)
+	lw $a1, 36($sp)
+	addi $sp, $sp, 40
+	move $t0, $v0
+	addi $sp, $sp, -40
+	sw $t0, 0($sp)
+	sw $t1, 4($sp)
+	sw $t2, 8($sp)
+	sw $t3, 12($sp)
+	sw $t4, 16($sp)
+	sw $t5, 20($sp)
+	sw $t6, 24($sp)
+	sw $t7, 28($sp)
+	sw $a0, 32($sp)
+	sw $a1, 36($sp)
+	# Allocating stack for arguments
+	addi $sp, $sp, -4
+	move $a2, $sp
+	li $t0,1
+	li $t1,-3
+	mult $t0,$t1
+	mflo $t0
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_10_overflow_max
+	bgt $t2,$t0,Label_11_overflow_min
+	j Label_9_end
+Label_10_overflow_max:
+	li $t0,32767
+	j Label_9_end
+Label_11_overflow_min:
+	li $t0,-32768
+Label_9_end:
+	move $a0,$t0
+	li $v0,1
+	syscall
+	li $a0,32
+	li $v0,11
+	syscall
+	# Deallocating stack for arguments
+	addi $sp, $sp, 4
+	lw $t0, 0($sp)
+	lw $t1, 4($sp)
+	lw $t2, 8($sp)
+	lw $t3, 12($sp)
+	lw $t4, 16($sp)
+	lw $t5, 20($sp)
+	lw $t6, 24($sp)
+	lw $t7, 28($sp)
+	lw $a0, 32($sp)
+	lw $a1, 36($sp)
+	addi $sp, $sp, 40
+	move $t0, $v0
+	addi $sp, $sp, -40
+	sw $t0, 0($sp)
+	sw $t1, 4($sp)
+	sw $t2, 8($sp)
+	sw $t3, 12($sp)
+	sw $t4, 16($sp)
+	sw $t5, 20($sp)
+	sw $t6, 24($sp)
+	sw $t7, 28($sp)
+	sw $a0, 32($sp)
+	sw $a1, 36($sp)
+	# Allocating stack for arguments
+	addi $sp, $sp, -4
+	move $a2, $sp
+	li $t0,80
+	li $t1,190
+	mult $t0,$t1
+	mflo $t0
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_13_overflow_max
+	bgt $t2,$t0,Label_14_overflow_min
+	j Label_12_end
+Label_13_overflow_max:
+	li $t0,32767
+	j Label_12_end
+Label_14_overflow_min:
+	li $t0,-32768
+Label_12_end:
+	move $a0,$t0
+	li $v0,1
+	syscall
+	li $a0,32
+	li $v0,11
+	syscall
+	# Deallocating stack for arguments
+	addi $sp, $sp, 4
+	lw $t0, 0($sp)
+	lw $t1, 4($sp)
+	lw $t2, 8($sp)
+	lw $t3, 12($sp)
+	lw $t4, 16($sp)
+	lw $t5, 20($sp)
+	lw $t6, 24($sp)
+	lw $t7, 28($sp)
+	lw $a0, 32($sp)
+	lw $a1, 36($sp)
+	addi $sp, $sp, 40
+	move $t0, $v0
+	addi $sp, $sp, -40
+	sw $t0, 0($sp)
+	sw $t1, 4($sp)
+	sw $t2, 8($sp)
+	sw $t3, 12($sp)
+	sw $t4, 16($sp)
+	sw $t5, 20($sp)
+	sw $t6, 24($sp)
+	sw $t7, 28($sp)
+	sw $a0, 32($sp)
+	sw $a1, 36($sp)
+	# Allocating stack for arguments
+	addi $sp, $sp, -4
+	move $a2, $sp
+	li $t0,32000
+	li $t1,1000
+	mult $t0,$t1
+	mflo $t0
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_16_overflow_max
+	bgt $t2,$t0,Label_17_overflow_min
+	j Label_15_end
+Label_16_overflow_max:
+	li $t0,32767
+	j Label_15_end
+Label_17_overflow_min:
+	li $t0,-32768
+Label_15_end:
+	move $a0,$t0
+	li $v0,1
+	syscall
+	li $a0,32
+	li $v0,11
+	syscall
+	# Deallocating stack for arguments
+	addi $sp, $sp, 4
+	lw $t0, 0($sp)
+	lw $t1, 4($sp)
+	lw $t2, 8($sp)
+	lw $t3, 12($sp)
+	lw $t4, 16($sp)
+	lw $t5, 20($sp)
+	lw $t6, 24($sp)
+	lw $t7, 28($sp)
+	lw $a0, 32($sp)
+	lw $a1, 36($sp)
+	addi $sp, $sp, 40
+	move $t0, $v0
+	addi $sp, $sp, -40
+	sw $t0, 0($sp)
+	sw $t1, 4($sp)
+	sw $t2, 8($sp)
+	sw $t3, 12($sp)
+	sw $t4, 16($sp)
+	sw $t5, 20($sp)
+	sw $t6, 24($sp)
+	sw $t7, 28($sp)
+	sw $a0, 32($sp)
+	sw $a1, 36($sp)
+	# Allocating stack for arguments
+	addi $sp, $sp, -4
+	move $a2, $sp
+	li $t0,16384
+	li $t1,2
+	mult $t0,$t1
+	mflo $t0
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_19_overflow_max
+	bgt $t2,$t0,Label_20_overflow_min
+	j Label_18_end
+Label_19_overflow_max:
+	li $t0,32767
+	j Label_18_end
+Label_20_overflow_min:
+	li $t0,-32768
+Label_18_end:
+	move $a0,$t0
+	li $v0,1
+	syscall
+	li $a0,32
+	li $v0,11
+	syscall
+	# Deallocating stack for arguments
+	addi $sp, $sp, 4
+	lw $t0, 0($sp)
+	lw $t1, 4($sp)
+	lw $t2, 8($sp)
+	lw $t3, 12($sp)
+	lw $t4, 16($sp)
+	lw $t5, 20($sp)
+	lw $t6, 24($sp)
+	lw $t7, 28($sp)
+	lw $a0, 32($sp)
+	lw $a1, 36($sp)
+	addi $sp, $sp, 40
+	move $t0, $v0
+	addi $sp, $sp, -40
+	sw $t0, 0($sp)
+	sw $t1, 4($sp)
+	sw $t2, 8($sp)
+	sw $t3, 12($sp)
+	sw $t4, 16($sp)
+	sw $t5, 20($sp)
+	sw $t6, 24($sp)
+	sw $t7, 28($sp)
+	sw $a0, 32($sp)
+	sw $a1, 36($sp)
+	# Allocating stack for arguments
+	addi $sp, $sp, -4
+	move $a2, $sp
+	li $t0,128
+	li $t1,256
+	mult $t0,$t1
+	mflo $t0
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_22_overflow_max
+	bgt $t2,$t0,Label_23_overflow_min
+	j Label_21_end
+Label_22_overflow_max:
+	li $t0,32767
+	j Label_21_end
+Label_23_overflow_min:
+	li $t0,-32768
+Label_21_end:
+	move $a0,$t0
+	li $v0,1
+	syscall
+	li $a0,32
+	li $v0,11
+	syscall
+	# Deallocating stack for arguments
+	addi $sp, $sp, 4
+	lw $t0, 0($sp)
+	lw $t1, 4($sp)
+	lw $t2, 8($sp)
+	lw $t3, 12($sp)
+	lw $t4, 16($sp)
+	lw $t5, 20($sp)
+	lw $t6, 24($sp)
+	lw $t7, 28($sp)
+	lw $a0, 32($sp)
+	lw $a1, 36($sp)
+	addi $sp, $sp, 40
+	move $t0, $v0
+	addi $sp, $sp, -40
+	sw $t0, 0($sp)
+	sw $t1, 4($sp)
+	sw $t2, 8($sp)
+	sw $t3, 12($sp)
+	sw $t4, 16($sp)
+	sw $t5, 20($sp)
+	sw $t6, 24($sp)
+	sw $t7, 28($sp)
+	sw $a0, 32($sp)
+	sw $a1, 36($sp)
+	# Allocating stack for arguments
+	addi $sp, $sp, -4
+	move $a2, $sp
+	li $t0,3200
+	li $t1,100
+	mult $t0,$t1
+	mflo $t0
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_25_overflow_max
+	bgt $t2,$t0,Label_26_overflow_min
+	j Label_24_end
+Label_25_overflow_max:
+	li $t0,32767
+	j Label_24_end
+Label_26_overflow_min:
+	li $t0,-32768
+Label_24_end:
+	li $t1,10
+	mult $t0,$t1
+	mflo $t0
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_28_overflow_max
+	bgt $t2,$t0,Label_29_overflow_min
+	j Label_27_end
+Label_28_overflow_max:
+	li $t0,32767
+	j Label_27_end
+Label_29_overflow_min:
+	li $t0,-32768
+Label_27_end:
+	li $t1,10
+	mult $t0,$t1
+	mflo $t0
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_31_overflow_max
+	bgt $t2,$t0,Label_32_overflow_min
+	j Label_30_end
+Label_31_overflow_max:
+	li $t0,32767
+	j Label_30_end
+Label_32_overflow_min:
+	li $t0,-32768
+Label_30_end:
+	li $t1,10
+	mult $t0,$t1
+	mflo $t0
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_34_overflow_max
+	bgt $t2,$t0,Label_35_overflow_min
+	j Label_33_end
+Label_34_overflow_max:
+	li $t0,32767
+	j Label_33_end
+Label_35_overflow_min:
+	li $t0,-32768
+Label_33_end:
+	li $t1,1
+	mult $t0,$t1
+	mflo $t0
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_37_overflow_max
+	bgt $t2,$t0,Label_38_overflow_min
+	j Label_36_end
+Label_37_overflow_max:
+	li $t0,32767
+	j Label_36_end
+Label_38_overflow_min:
+	li $t0,-32768
+Label_36_end:
+	move $a0,$t0
+	li $v0,1
+	syscall
+	li $a0,32
+	li $v0,11
+	syscall
+	# Deallocating stack for arguments
+	addi $sp, $sp, 4
+	lw $t0, 0($sp)
+	lw $t1, 4($sp)
+	lw $t2, 8($sp)
+	lw $t3, 12($sp)
+	lw $t4, 16($sp)
+	lw $t5, 20($sp)
+	lw $t6, 24($sp)
+	lw $t7, 28($sp)
+	lw $a0, 32($sp)
+	lw $a1, 36($sp)
+	addi $sp, $sp, 40
+	move $t0, $v0
+	addi $sp, $sp, -40
+	sw $t0, 0($sp)
+	sw $t1, 4($sp)
+	sw $t2, 8($sp)
+	sw $t3, 12($sp)
+	sw $t4, 16($sp)
+	sw $t5, 20($sp)
+	sw $t6, 24($sp)
+	sw $t7, 28($sp)
+	sw $a0, 32($sp)
+	sw $a1, 36($sp)
+	# Allocating stack for arguments
+	addi $sp, $sp, -4
+	move $a2, $sp
+	li $t0,2
+	li $t1,2
+	mult $t0,$t1
+	mflo $t0
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_40_overflow_max
+	bgt $t2,$t0,Label_41_overflow_min
+	j Label_39_end
+Label_40_overflow_max:
+	li $t0,32767
+	j Label_39_end
+Label_41_overflow_min:
+	li $t0,-32768
+Label_39_end:
+	li $t1,2
+	mult $t0,$t1
+	mflo $t0
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_43_overflow_max
+	bgt $t2,$t0,Label_44_overflow_min
+	j Label_42_end
+Label_43_overflow_max:
+	li $t0,32767
+	j Label_42_end
+Label_44_overflow_min:
+	li $t0,-32768
+Label_42_end:
+	li $t1,2
+	mult $t0,$t1
+	mflo $t0
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_46_overflow_max
+	bgt $t2,$t0,Label_47_overflow_min
+	j Label_45_end
+Label_46_overflow_max:
+	li $t0,32767
+	j Label_45_end
+Label_47_overflow_min:
+	li $t0,-32768
+Label_45_end:
+	li $t1,2
+	mult $t0,$t1
+	mflo $t0
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_49_overflow_max
+	bgt $t2,$t0,Label_50_overflow_min
+	j Label_48_end
+Label_49_overflow_max:
+	li $t0,32767
+	j Label_48_end
+Label_50_overflow_min:
+	li $t0,-32768
+Label_48_end:
+	li $t1,2
+	mult $t0,$t1
+	mflo $t0
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_52_overflow_max
+	bgt $t2,$t0,Label_53_overflow_min
+	j Label_51_end
+Label_52_overflow_max:
+	li $t0,32767
+	j Label_51_end
+Label_53_overflow_min:
+	li $t0,-32768
+Label_51_end:
+	li $t1,2
+	mult $t0,$t1
+	mflo $t0
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_55_overflow_max
+	bgt $t2,$t0,Label_56_overflow_min
+	j Label_54_end
+Label_55_overflow_max:
+	li $t0,32767
+	j Label_54_end
+Label_56_overflow_min:
+	li $t0,-32768
+Label_54_end:
+	li $t1,2
+	mult $t0,$t1
+	mflo $t0
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_58_overflow_max
+	bgt $t2,$t0,Label_59_overflow_min
+	j Label_57_end
+Label_58_overflow_max:
+	li $t0,32767
+	j Label_57_end
+Label_59_overflow_min:
+	li $t0,-32768
+Label_57_end:
+	li $t1,2
+	mult $t0,$t1
+	mflo $t0
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_61_overflow_max
+	bgt $t2,$t0,Label_62_overflow_min
+	j Label_60_end
+Label_61_overflow_max:
+	li $t0,32767
+	j Label_60_end
+Label_62_overflow_min:
+	li $t0,-32768
+Label_60_end:
+	li $t1,2
+	mult $t0,$t1
+	mflo $t0
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_64_overflow_max
+	bgt $t2,$t0,Label_65_overflow_min
+	j Label_63_end
+Label_64_overflow_max:
+	li $t0,32767
+	j Label_63_end
+Label_65_overflow_min:
+	li $t0,-32768
+Label_63_end:
+	li $t1,2
+	mult $t0,$t1
+	mflo $t0
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_67_overflow_max
+	bgt $t2,$t0,Label_68_overflow_min
+	j Label_66_end
+Label_67_overflow_max:
+	li $t0,32767
+	j Label_66_end
+Label_68_overflow_min:
+	li $t0,-32768
+Label_66_end:
+	li $t1,2
+	mult $t0,$t1
+	mflo $t0
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_70_overflow_max
+	bgt $t2,$t0,Label_71_overflow_min
+	j Label_69_end
+Label_70_overflow_max:
+	li $t0,32767
+	j Label_69_end
+Label_71_overflow_min:
+	li $t0,-32768
+Label_69_end:
+	li $t1,2
+	mult $t0,$t1
+	mflo $t0
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_73_overflow_max
+	bgt $t2,$t0,Label_74_overflow_min
+	j Label_72_end
+Label_73_overflow_max:
+	li $t0,32767
+	j Label_72_end
+Label_74_overflow_min:
+	li $t0,-32768
+Label_72_end:
+	li $t1,2
+	mult $t0,$t1
+	mflo $t0
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_76_overflow_max
+	bgt $t2,$t0,Label_77_overflow_min
+	j Label_75_end
+Label_76_overflow_max:
+	li $t0,32767
+	j Label_75_end
+Label_77_overflow_min:
+	li $t0,-32768
+Label_75_end:
+	li $t1,2
+	mult $t0,$t1
+	mflo $t0
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_79_overflow_max
+	bgt $t2,$t0,Label_80_overflow_min
+	j Label_78_end
+Label_79_overflow_max:
+	li $t0,32767
+	j Label_78_end
+Label_80_overflow_min:
+	li $t0,-32768
+Label_78_end:
+	li $t1,2
+	mult $t0,$t1
+	mflo $t0
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_82_overflow_max
+	bgt $t2,$t0,Label_83_overflow_min
+	j Label_81_end
+Label_82_overflow_max:
+	li $t0,32767
+	j Label_81_end
+Label_83_overflow_min:
+	li $t0,-32768
+Label_81_end:
+	li $t1,2
+	mult $t0,$t1
+	mflo $t0
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_85_overflow_max
+	bgt $t2,$t0,Label_86_overflow_min
+	j Label_84_end
+Label_85_overflow_max:
+	li $t0,32767
+	j Label_84_end
+Label_86_overflow_min:
+	li $t0,-32768
+Label_84_end:
+	li $t1,2
+	mult $t0,$t1
+	mflo $t0
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_88_overflow_max
+	bgt $t2,$t0,Label_89_overflow_min
+	j Label_87_end
+Label_88_overflow_max:
+	li $t0,32767
+	j Label_87_end
+Label_89_overflow_min:
+	li $t0,-32768
+Label_87_end:
+	move $a0,$t0
+	li $v0,1
+	syscall
+	li $a0,32
+	li $v0,11
+	syscall
+	# Deallocating stack for arguments
+	addi $sp, $sp, 4
+	lw $t0, 0($sp)
+	lw $t1, 4($sp)
+	lw $t2, 8($sp)
+	lw $t3, 12($sp)
+	lw $t4, 16($sp)
+	lw $t5, 20($sp)
+	lw $t6, 24($sp)
+	lw $t7, 28($sp)
+	lw $a0, 32($sp)
+	lw $a1, 36($sp)
+	addi $sp, $sp, 40
+	move $t0, $v0
+	addi $sp, $sp, -40
+	sw $t0, 0($sp)
+	sw $t1, 4($sp)
+	sw $t2, 8($sp)
+	sw $t3, 12($sp)
+	sw $t4, 16($sp)
+	sw $t5, 20($sp)
+	sw $t6, 24($sp)
+	sw $t7, 28($sp)
+	sw $a0, 32($sp)
+	sw $a1, 36($sp)
+	# Allocating stack for arguments
+	addi $sp, $sp, -4
+	move $a2, $sp
+	li $t0,8
+	li $t1,8
+	mult $t0,$t1
+	mflo $t0
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_91_overflow_max
+	bgt $t2,$t0,Label_92_overflow_min
+	j Label_90_end
+Label_91_overflow_max:
+	li $t0,32767
+	j Label_90_end
+Label_92_overflow_min:
+	li $t0,-32768
+Label_90_end:
+	li $t1,8
+	mult $t0,$t1
+	mflo $t0
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_94_overflow_max
+	bgt $t2,$t0,Label_95_overflow_min
+	j Label_93_end
+Label_94_overflow_max:
+	li $t0,32767
+	j Label_93_end
+Label_95_overflow_min:
+	li $t0,-32768
+Label_93_end:
+	li $t1,8
+	mult $t0,$t1
+	mflo $t0
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_97_overflow_max
+	bgt $t2,$t0,Label_98_overflow_min
+	j Label_96_end
+Label_97_overflow_max:
+	li $t0,32767
+	j Label_96_end
+Label_98_overflow_min:
+	li $t0,-32768
+Label_96_end:
+	li $t1,8
+	mult $t0,$t1
+	mflo $t0
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_100_overflow_max
+	bgt $t2,$t0,Label_101_overflow_min
+	j Label_99_end
+Label_100_overflow_max:
+	li $t0,32767
+	j Label_99_end
+Label_101_overflow_min:
+	li $t0,-32768
+Label_99_end:
+	move $a0,$t0
+	li $v0,1
+	syscall
+	li $a0,32
+	li $v0,11
+	syscall
+	# Deallocating stack for arguments
+	addi $sp, $sp, 4
+	lw $t0, 0($sp)
+	lw $t1, 4($sp)
+	lw $t2, 8($sp)
+	lw $t3, 12($sp)
+	lw $t4, 16($sp)
+	lw $t5, 20($sp)
+	lw $t6, 24($sp)
+	lw $t7, 28($sp)
+	lw $a0, 32($sp)
+	lw $a1, 36($sp)
+	addi $sp, $sp, 40
+	move $t0, $v0
+	addi $sp, $sp, -40
+	sw $t0, 0($sp)
+	sw $t1, 4($sp)
+	sw $t2, 8($sp)
+	sw $t3, 12($sp)
+	sw $t4, 16($sp)
+	sw $t5, 20($sp)
+	sw $t6, 24($sp)
+	sw $t7, 28($sp)
+	sw $a0, 32($sp)
+	sw $a1, 36($sp)
+	# Allocating stack for arguments
+	addi $sp, $sp, -4
+	move $a2, $sp
+	li $t0,32767
+	li $t1,1
+	mult $t0,$t1
+	mflo $t0
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_103_overflow_max
+	bgt $t2,$t0,Label_104_overflow_min
+	j Label_102_end
+Label_103_overflow_max:
+	li $t0,32767
+	j Label_102_end
+Label_104_overflow_min:
+	li $t0,-32768
+Label_102_end:
+	move $a0,$t0
+	li $v0,1
+	syscall
+	li $a0,32
+	li $v0,11
+	syscall
+	# Deallocating stack for arguments
+	addi $sp, $sp, 4
+	lw $t0, 0($sp)
+	lw $t1, 4($sp)
+	lw $t2, 8($sp)
+	lw $t3, 12($sp)
+	lw $t4, 16($sp)
+	lw $t5, 20($sp)
+	lw $t6, 24($sp)
+	lw $t7, 28($sp)
+	lw $a0, 32($sp)
+	lw $a1, 36($sp)
+	addi $sp, $sp, 40
+	move $t0, $v0
+	addi $sp, $sp, -40
+	sw $t0, 0($sp)
+	sw $t1, 4($sp)
+	sw $t2, 8($sp)
+	sw $t3, 12($sp)
+	sw $t4, 16($sp)
+	sw $t5, 20($sp)
+	sw $t6, 24($sp)
+	sw $t7, 28($sp)
+	sw $a0, 32($sp)
+	sw $a1, 36($sp)
+	# Allocating stack for arguments
+	addi $sp, $sp, -4
+	move $a2, $sp
+	li $t0,-256
+	li $t1,256
+	mult $t0,$t1
+	mflo $t0
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_106_overflow_max
+	bgt $t2,$t0,Label_107_overflow_min
+	j Label_105_end
+Label_106_overflow_max:
+	li $t0,32767
+	j Label_105_end
+Label_107_overflow_min:
+	li $t0,-32768
+Label_105_end:
+	move $a0,$t0
+	li $v0,1
+	syscall
+	li $a0,32
+	li $v0,11
+	syscall
+	# Deallocating stack for arguments
+	addi $sp, $sp, 4
+	lw $t0, 0($sp)
+	lw $t1, 4($sp)
+	lw $t2, 8($sp)
+	lw $t3, 12($sp)
+	lw $t4, 16($sp)
+	lw $t5, 20($sp)
+	lw $t6, 24($sp)
+	lw $t7, 28($sp)
+	lw $a0, 32($sp)
+	lw $a1, 36($sp)
+	addi $sp, $sp, 40
+	move $t0, $v0
+	addi $sp, $sp, -40
+	sw $t0, 0($sp)
+	sw $t1, 4($sp)
+	sw $t2, 8($sp)
+	sw $t3, 12($sp)
+	sw $t4, 16($sp)
+	sw $t5, 20($sp)
+	sw $t6, 24($sp)
+	sw $t7, 28($sp)
+	sw $a0, 32($sp)
+	sw $a1, 36($sp)
+	# Allocating stack for arguments
+	addi $sp, $sp, -4
+	move $a2, $sp
+	li $t0,-256
+	li $t1,-256
+	mult $t0,$t1
+	mflo $t0
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_109_overflow_max
+	bgt $t2,$t0,Label_110_overflow_min
+	j Label_108_end
+Label_109_overflow_max:
+	li $t0,32767
+	j Label_108_end
+Label_110_overflow_min:
+	li $t0,-32768
+Label_108_end:
+	move $a0,$t0
+	li $v0,1
+	syscall
+	li $a0,32
+	li $v0,11
+	syscall
+	# Deallocating stack for arguments
+	addi $sp, $sp, 4
+	lw $t0, 0($sp)
+	lw $t1, 4($sp)
+	lw $t2, 8($sp)
+	lw $t3, 12($sp)
+	lw $t4, 16($sp)
+	lw $t5, 20($sp)
+	lw $t6, 24($sp)
+	lw $t7, 28($sp)
+	lw $a0, 32($sp)
+	lw $a1, 36($sp)
+	addi $sp, $sp, 40
+	move $t0, $v0
+	addi $sp, $sp, -40
+	sw $t0, 0($sp)
+	sw $t1, 4($sp)
+	sw $t2, 8($sp)
+	sw $t3, 12($sp)
+	sw $t4, 16($sp)
+	sw $t5, 20($sp)
+	sw $t6, 24($sp)
+	sw $t7, 28($sp)
+	sw $a0, 32($sp)
+	sw $a1, 36($sp)
+	# Allocating stack for arguments
+	addi $sp, $sp, -4
+	move $a2, $sp
+	li $t0,-8
+	li $t1,-8
+	mult $t0,$t1
+	mflo $t0
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_112_overflow_max
+	bgt $t2,$t0,Label_113_overflow_min
+	j Label_111_end
+Label_112_overflow_max:
+	li $t0,32767
+	j Label_111_end
+Label_113_overflow_min:
+	li $t0,-32768
+Label_111_end:
+	li $t1,-8
+	mult $t0,$t1
+	mflo $t0
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_115_overflow_max
+	bgt $t2,$t0,Label_116_overflow_min
+	j Label_114_end
+Label_115_overflow_max:
+	li $t0,32767
+	j Label_114_end
+Label_116_overflow_min:
+	li $t0,-32768
+Label_114_end:
+	li $t1,8
+	mult $t0,$t1
+	mflo $t0
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_118_overflow_max
+	bgt $t2,$t0,Label_119_overflow_min
+	j Label_117_end
+Label_118_overflow_max:
+	li $t0,32767
+	j Label_117_end
+Label_119_overflow_min:
+	li $t0,-32768
+Label_117_end:
+	li $t1,8
+	mult $t0,$t1
+	mflo $t0
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_121_overflow_max
+	bgt $t2,$t0,Label_122_overflow_min
+	j Label_120_end
+Label_121_overflow_max:
+	li $t0,32767
+	j Label_120_end
+Label_122_overflow_min:
+	li $t0,-32768
+Label_120_end:
+	move $a0,$t0
+	li $v0,1
+	syscall
+	li $a0,32
+	li $v0,11
+	syscall
+	# Deallocating stack for arguments
+	addi $sp, $sp, 4
+	lw $t0, 0($sp)
+	lw $t1, 4($sp)
+	lw $t2, 8($sp)
+	lw $t3, 12($sp)
+	lw $t4, 16($sp)
+	lw $t5, 20($sp)
+	lw $t6, 24($sp)
+	lw $t7, 28($sp)
+	lw $a0, 32($sp)
+	lw $a1, 36($sp)
+	addi $sp, $sp, 40
+	move $t0, $v0
+	addi $sp, $sp, -40
+	sw $t0, 0($sp)
+	sw $t1, 4($sp)
+	sw $t2, 8($sp)
+	sw $t3, 12($sp)
+	sw $t4, 16($sp)
+	sw $t5, 20($sp)
+	sw $t6, 24($sp)
+	sw $t7, 28($sp)
+	sw $a0, 32($sp)
+	sw $a1, 36($sp)
+	# Allocating stack for arguments
+	addi $sp, $sp, -4
+	move $a2, $sp
+	li $t0,-32768
+	li $t1,-1
+	mult $t0,$t1
+	mflo $t0
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_124_overflow_max
+	bgt $t2,$t0,Label_125_overflow_min
+	j Label_123_end
+Label_124_overflow_max:
+	li $t0,32767
+	j Label_123_end
+Label_125_overflow_min:
+	li $t0,-32768
+Label_123_end:
+	move $a0,$t0
+	li $v0,1
+	syscall
+	li $a0,32
+	li $v0,11
+	syscall
+	# Deallocating stack for arguments
+	addi $sp, $sp, 4
+	lw $t0, 0($sp)
+	lw $t1, 4($sp)
+	lw $t2, 8($sp)
+	lw $t3, 12($sp)
+	lw $t4, 16($sp)
+	lw $t5, 20($sp)
+	lw $t6, 24($sp)
+	lw $t7, 28($sp)
+	lw $a0, 32($sp)
+	lw $a1, 36($sp)
+	addi $sp, $sp, 40
+	move $t0, $v0
+	addi $sp, $sp, -40
+	sw $t0, 0($sp)
+	sw $t1, 4($sp)
+	sw $t2, 8($sp)
+	sw $t3, 12($sp)
+	sw $t4, 16($sp)
+	sw $t5, 20($sp)
+	sw $t6, 24($sp)
+	sw $t7, 28($sp)
+	sw $a0, 32($sp)
+	sw $a1, 36($sp)
+	# Allocating stack for arguments
+	addi $sp, $sp, -4
+	move $a2, $sp
+	li $t0,-256
+	li $t1,256
+	mult $t0,$t1
+	mflo $t1
+	li $t0,32767
+	li $t2,-32768
+	blt $t0,$t1,Label_127_overflow_max
+	bgt $t2,$t1,Label_128_overflow_min
+	j Label_126_end
+Label_127_overflow_max:
+	li $t1,32767
+	j Label_126_end
+Label_128_overflow_min:
+	li $t1,-32768
+Label_126_end:
+	li $t2,4
+	bnez $t2,Label_132_div_by_zero_not
+	li $v0, 4
+	la $a0, string_illegal_div_by_0
+	syscall
+	li $v0,10
+	syscall
+Label_132_div_by_zero_not:
+	div $t0,$t1,$t2
+	mflo $t0
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_130_overflow_max
+	bgt $t2,$t0,Label_131_overflow_min
+	j Label_129_end
+Label_130_overflow_max:
+	li $t0,32767
+	j Label_129_end
+Label_131_overflow_min:
+	li $t0,-32768
+Label_129_end:
+	move $a0,$t0
+	li $v0,1
+	syscall
+	li $a0,32
+	li $v0,11
+	syscall
+	# Deallocating stack for arguments
+	addi $sp, $sp, 4
+	lw $t0, 0($sp)
+	lw $t1, 4($sp)
+	lw $t2, 8($sp)
+	lw $t3, 12($sp)
+	lw $t4, 16($sp)
+	lw $t5, 20($sp)
+	lw $t6, 24($sp)
+	lw $t7, 28($sp)
+	lw $a0, 32($sp)
+	lw $a1, 36($sp)
+	addi $sp, $sp, 40
+	move $t0, $v0
+Label_1_Func_main_end:
+	addi $sp, $sp, 4
+	lw	$fp, ($sp)
+	lw	$ra, 4($sp)
+	addi $sp, $sp, 8
+	li $v0,10
+	syscall

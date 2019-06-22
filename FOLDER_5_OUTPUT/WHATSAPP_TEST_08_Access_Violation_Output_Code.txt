@@ -1,0 +1,380 @@
+.data
+string_access_violation: .asciiz "Access Violation"
+string_illegal_div_by_0: .asciiz "Division By Zero"
+string_invalid_ptr_dref: .asciiz "Invalid Pointer Dereference"
+Label_6_StringLiteral: .asciiz "getAge"
+Label_7_StringLiteral: .asciiz "birthday"
+Label_8_StringLiteral: .asciiz "getAverage"
+Label_11_StringLiteral: .asciiz "main"
+.align 2
+Person_funcTable: .space 8
+.align 2
+Student_funcTable: .space 12
+.text
+main:
+	la $t0, Person_funcTable
+	la $t1, Label_0_Func_getAge_Person
+	addi $t0, $t0, 0
+	sw $t1, ($t0)
+	la $t0, Person_funcTable
+	la $t1, Label_2_Func_birthday_Person
+	addi $t0, $t0, 4
+	sw $t1, ($t0)
+	la $t0, Student_funcTable
+	la $t1, Label_0_Func_getAge_Person
+	addi $t0, $t0, 0
+	sw $t1, ($t0)
+	la $t0, Student_funcTable
+	la $t1, Label_2_Func_birthday_Person
+	addi $t0, $t0, 4
+	sw $t1, ($t0)
+	la $t0, Student_funcTable
+	la $t1, Label_4_Func_getAverage_Student
+	addi $t0, $t0, 8
+	sw $t1, ($t0)
+	j __main__
+	# Begin error handlers:
+access_violation:
+	li $v0, 4
+	la $a0, string_access_violation
+	syscall
+	li $v0,10
+	syscall
+invalid_pointer:
+	li $v0, 4
+	la $a0, string_invalid_ptr_dref
+	syscall
+	li $v0,10
+	syscall
+	li $t0,18
+Label_0_Func_getAge_Person:
+	la $t0, Label_6_StringLiteral
+	addi $sp, $sp, -8
+	sw $ra, 4($sp)
+	sw $fp, 0($sp)
+	move $fp, $sp
+	addi $sp, $sp, -4
+	sw $t0, 0($sp)
+	addi $sp, $sp, 0
+Label_13_prolog_end_getAge_Person:
+	# func prolog end
+	beq $a1,$zero,invalid_pointer
+	lw $t0, 8($a1)
+	move $v0, $t0
+	j Label_1_Func_getAge_Person_end
+Label_1_Func_getAge_Person_end:
+	addi $sp, $sp, 4
+	lw	$fp, ($sp)
+	lw	$ra, 4($sp)
+	addi $sp, $sp, 8
+	jr $ra
+Label_2_Func_birthday_Person:
+	la $t0, Label_7_StringLiteral
+	addi $sp, $sp, -8
+	sw $ra, 4($sp)
+	sw $fp, 0($sp)
+	move $fp, $sp
+	addi $sp, $sp, -4
+	sw $t0, 0($sp)
+	addi $sp, $sp, 0
+Label_14_prolog_end_birthday_Person:
+	# func prolog end
+	beq $a1,$zero,invalid_pointer
+	lw $t1, 8($a1)
+	li $t2,1
+	add $t0,$t1,$t2
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_16_overflow_max
+	bgt $t2,$t0,Label_17_overflow_min
+	j Label_15_end
+Label_16_overflow_max:
+	li $t0,32767
+	j Label_15_end
+Label_17_overflow_min:
+	li $t0,-32768
+Label_15_end:
+	beq $a1,$zero,invalid_pointer
+	sw $t0, 8($a1)
+Label_3_Func_birthday_Person_end:
+	addi $sp, $sp, 4
+	lw	$fp, ($sp)
+	lw	$ra, 4($sp)
+	addi $sp, $sp, 8
+	jr $ra
+Label_4_Func_getAverage_Student:
+	la $t0, Label_8_StringLiteral
+	addi $sp, $sp, -8
+	sw $ra, 4($sp)
+	sw $fp, 0($sp)
+	move $fp, $sp
+	addi $sp, $sp, -4
+	sw $t0, 0($sp)
+	addi $sp, $sp, -8
+Label_18_prolog_end_getAverage_Student:
+	# func prolog end
+	li $t0,0
+	sw $t0, -8($fp)
+	li $t0,0
+	sw $t0, -12($fp)
+Label_10_while_statement_start:
+	lw $t0, -8($fp)
+	li $t1,10
+	blt $t0,$t1,Label_20_AssignOne
+	bge $t0,$t1,Label_21_AssignZero
+Label_20_AssignOne:
+	li $t0, 1
+	j Label_19_end
+Label_21_AssignZero:
+	li $t0, 0
+Label_19_end:
+	beq $t0,$zero,Label_9_while_statement_end
+	lw $t1, -12($fp)
+	beq $a1,$zero,invalid_pointer
+	lw $t0, 16($a1)
+	lw $t2, -8($fp)
+	beq $t0,$zero,invalid_pointer
+	lw $t3, 0($t0)
+	bge $t2,$t3,access_violation
+	blt $t2,$zero,access_violation
+	addi $t3,$t2,1
+	li $t2,4
+	mult $t3,$t2
+	mflo $t3
+	add $t3,$t0,$t3
+	lw $t2, 0($t3)
+	add $t0,$t1,$t2
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_23_overflow_max
+	bgt $t2,$t0,Label_24_overflow_min
+	j Label_22_end
+Label_23_overflow_max:
+	li $t0,32767
+	j Label_22_end
+Label_24_overflow_min:
+	li $t0,-32768
+Label_22_end:
+	sw $t0, -12($fp)
+	lw $t1, -8($fp)
+	li $t2,1
+	add $t0,$t1,$t2
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_26_overflow_max
+	bgt $t2,$t0,Label_27_overflow_min
+	j Label_25_end
+Label_26_overflow_max:
+	li $t0,32767
+	j Label_25_end
+Label_27_overflow_min:
+	li $t0,-32768
+Label_25_end:
+	sw $t0, -8($fp)
+	j Label_10_while_statement_start
+Label_9_while_statement_end:
+	lw $t1, -12($fp)
+	li $t2,10
+	bnez $t2,Label_31_div_by_zero_not
+	li $v0, 4
+	la $a0, string_illegal_div_by_0
+	syscall
+	li $v0,10
+	syscall
+Label_31_div_by_zero_not:
+	div $t0,$t1,$t2
+	mflo $t0
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_29_overflow_max
+	bgt $t2,$t0,Label_30_overflow_min
+	j Label_28_end
+Label_29_overflow_max:
+	li $t0,32767
+	j Label_28_end
+Label_30_overflow_min:
+	li $t0,-32768
+Label_28_end:
+	move $v0, $t0
+	j Label_5_Func_getAverage_Student_end
+Label_5_Func_getAverage_Student_end:
+	addi $sp, $sp, 12
+	lw	$fp, ($sp)
+	lw	$ra, 4($sp)
+	addi $sp, $sp, 8
+	jr $ra
+__main__:
+	la $t0, Label_11_StringLiteral
+	addi $sp, $sp, -8
+	sw $ra, 4($sp)
+	sub $fp, $fp, $fp
+	sw $fp, 0($sp)
+	move $fp, $sp
+	addi $sp, $sp, -4
+	sw $t0, 0($sp)
+	addi $sp, $sp, -12
+Label_32_prolog_end_main:
+	# func prolog end
+	addi $sp, $sp, -4
+	sw $a0, 0($sp)
+	li $v0,9
+	li $a0 ,20
+	syscall
+	move $t1,$v0
+	lw $a0, 0($sp)
+	addi $sp, $sp, 4
+	addi $t0,$t1,0
+	la $t2, Student_funcTable
+	sw $t2, 0($t1)
+	li $t2,0
+	addi $t1,$t1,4
+	sw $t2, 0($t1)
+	li $t2,18
+	addi $t1,$t1,4
+	sw $t2, 0($t1)
+	addi $t2, $zero, 0
+	addi $t1,$t1,4
+	sw $t2, 0($t1)
+	addi $t2, $zero, 0
+	addi $t1,$t1,4
+	sw $t2, 0($t1)
+	sw $t0, -8($fp)
+	lw $t0, -8($fp)
+	li $t2,10
+	# Begin array allocation
+	addi $t1,$t2,1
+	li $t3,4
+	mult $t1,$t3
+	mflo $t1
+	addi $sp, $sp, -4
+	sw $a0, 0($sp)
+	addi $a0, $t1, 0
+	li $v0, 9
+	syscall
+	addi $t1, $v0, 0
+	lw $a0, 0($sp)
+	addi $sp, $sp, 4
+	sw $t2, 0($t1)
+	# end array allocation
+	beq $t0,$zero,invalid_pointer
+	sw $t1, 16($t0)
+	lw $t0, -8($fp)
+	li $t2,12
+	# Begin array allocation
+	addi $t1,$t2,1
+	li $t3,4
+	mult $t1,$t3
+	mflo $t1
+	addi $sp, $sp, -4
+	sw $a0, 0($sp)
+	addi $a0, $t1, 0
+	li $v0, 9
+	syscall
+	addi $t1, $v0, 0
+	lw $a0, 0($sp)
+	addi $sp, $sp, 4
+	sw $t2, 0($t1)
+	# end array allocation
+	beq $t0,$zero,invalid_pointer
+	sw $t1, 12($t0)
+	li $t0,6
+	sw $t0, -12($fp)
+	lw $t0, -8($fp)
+	beq $t0,$zero,invalid_pointer
+	lw $t1, 16($t0)
+	lw $t0, -12($fp)
+	li $t2,99
+	lw $t3, 0($t1)
+	bge $t0,$t3,access_violation
+	blt $t0,$zero,access_violation
+	addi $t3,$t0,1
+	li $t0,4
+	mult $t3,$t0
+	mflo $t3
+	add $t3,$t1,$t3
+	sw $t2, 0($t3)
+	li $t1,37
+	# Begin array allocation
+	addi $t0,$t1,1
+	li $t2,4
+	mult $t0,$t2
+	mflo $t0
+	addi $sp, $sp, -4
+	sw $a0, 0($sp)
+	addi $a0, $t0, 0
+	li $v0, 9
+	syscall
+	addi $t0, $v0, 0
+	lw $a0, 0($sp)
+	addi $sp, $sp, 4
+	sw $t1, 0($t0)
+	# end array allocation
+	sw $t0, -16($fp)
+	lw $t0, -16($fp)
+	li $t1,3
+	lw $t2, -8($fp)
+	lw $t3, 0($t0)
+	bge $t1,$t3,access_violation
+	blt $t1,$zero,access_violation
+	addi $t3,$t1,1
+	li $t1,4
+	mult $t3,$t1
+	mflo $t3
+	add $t3,$t0,$t3
+	sw $t2, 0($t3)
+	lw $t1, -16($fp)
+	li $t0,3
+	beq $t1,$zero,invalid_pointer
+	lw $t2, 0($t1)
+	bge $t0,$t2,access_violation
+	blt $t0,$zero,access_violation
+	addi $t2,$t0,1
+	li $t0,4
+	mult $t2,$t0
+	mflo $t2
+	add $t2,$t1,$t2
+	lw $t0, 0($t2)
+	beq $t0,$zero,invalid_pointer
+	lw $t1, 12($t0)
+	lw $t2, -16($fp)
+	li $t0,3
+	beq $t2,$zero,invalid_pointer
+	lw $t3, 0($t2)
+	bge $t0,$t3,access_violation
+	blt $t0,$zero,access_violation
+	addi $t3,$t0,1
+	li $t0,4
+	mult $t3,$t0
+	mflo $t3
+	add $t3,$t2,$t3
+	lw $t0, 0($t3)
+	beq $t0,$zero,invalid_pointer
+	lw $t2, 16($t0)
+	lw $t0, -12($fp)
+	beq $t2,$zero,invalid_pointer
+	lw $t3, 0($t2)
+	bge $t0,$t3,access_violation
+	blt $t0,$zero,access_violation
+	addi $t3,$t0,1
+	li $t0,4
+	mult $t3,$t0
+	mflo $t3
+	add $t3,$t2,$t3
+	lw $t0, 0($t3)
+	li $t2,999
+	lw $t3, 0($t1)
+	bge $t0,$t3,access_violation
+	blt $t0,$zero,access_violation
+	addi $t3,$t0,1
+	li $t0,4
+	mult $t3,$t0
+	mflo $t3
+	add $t3,$t1,$t3
+	sw $t2, 0($t3)
+Label_12_Func_main_end:
+	addi $sp, $sp, 16
+	lw	$fp, ($sp)
+	lw	$ra, 4($sp)
+	addi $sp, $sp, 8
+	li $v0,10
+	syscall

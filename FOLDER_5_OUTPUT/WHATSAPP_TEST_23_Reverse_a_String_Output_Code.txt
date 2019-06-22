@@ -1,0 +1,436 @@
+.data
+string_access_violation: .asciiz "Access Violation"
+string_illegal_div_by_0: .asciiz "Division By Zero"
+string_invalid_ptr_dref: .asciiz "Invalid Pointer Dereference"
+Label_0_StringLiteral: .asciiz "T"
+Label_1_StringLiteral: .asciiz "e"
+Label_2_StringLiteral: .asciiz "s"
+Label_3_StringLiteral: .asciiz "t"
+Label_4_StringLiteral: .asciiz "main"
+.text
+main:
+	j __main__
+	# Begin error handlers:
+access_violation:
+	li $v0, 4
+	la $a0, string_access_violation
+	syscall
+	li $v0,10
+	syscall
+invalid_pointer:
+	li $v0, 4
+	la $a0, string_invalid_ptr_dref
+	syscall
+	li $v0,10
+	syscall
+__main__:
+	la $t0, Label_4_StringLiteral
+	addi $sp, $sp, -8
+	sw $ra, 4($sp)
+	sub $fp, $fp, $fp
+	sw $fp, 0($sp)
+	move $fp, $sp
+	addi $sp, $sp, -4
+	sw $t0, 0($sp)
+	addi $sp, $sp, -16
+Label_8_prolog_end_main:
+	# func prolog end
+	li $t1,4
+	# Begin array allocation
+	addi $t0,$t1,1
+	li $t2,4
+	mult $t0,$t2
+	mflo $t0
+	addi $sp, $sp, -4
+	sw $a0, 0($sp)
+	addi $a0, $t0, 0
+	li $v0, 9
+	syscall
+	addi $t0, $v0, 0
+	lw $a0, 0($sp)
+	addi $sp, $sp, 4
+	sw $t1, 0($t0)
+	# end array allocation
+	sw $t0, -8($fp)
+	lw $t0, -8($fp)
+	li $t1,0
+	la $t2, Label_0_StringLiteral
+	lw $t3, 0($t0)
+	bge $t1,$t3,access_violation
+	blt $t1,$zero,access_violation
+	addi $t3,$t1,1
+	li $t1,4
+	mult $t3,$t1
+	mflo $t3
+	add $t3,$t0,$t3
+	sw $t2, 0($t3)
+	lw $t0, -8($fp)
+	li $t1,1
+	la $t2, Label_1_StringLiteral
+	lw $t3, 0($t0)
+	bge $t1,$t3,access_violation
+	blt $t1,$zero,access_violation
+	addi $t3,$t1,1
+	li $t1,4
+	mult $t3,$t1
+	mflo $t3
+	add $t3,$t0,$t3
+	sw $t2, 0($t3)
+	lw $t0, -8($fp)
+	li $t1,2
+	la $t2, Label_2_StringLiteral
+	lw $t3, 0($t0)
+	bge $t1,$t3,access_violation
+	blt $t1,$zero,access_violation
+	addi $t3,$t1,1
+	li $t1,4
+	mult $t3,$t1
+	mflo $t3
+	add $t3,$t0,$t3
+	sw $t2, 0($t3)
+	lw $t0, -8($fp)
+	li $t1,3
+	la $t2, Label_3_StringLiteral
+	lw $t3, 0($t0)
+	bge $t1,$t3,access_violation
+	blt $t1,$zero,access_violation
+	addi $t3,$t1,1
+	li $t1,4
+	mult $t3,$t1
+	mflo $t3
+	add $t3,$t0,$t3
+	sw $t2, 0($t3)
+	li $t0,4
+	sw $t0, -12($fp)
+	li $t0,0
+	sw $t0, -16($fp)
+	sw $zero, -20($fp)
+Label_7_while_statement_start:
+	lw $t0, -16($fp)
+	lw $t2, -12($fp)
+	li $t3,2
+	bnez $t3,Label_12_div_by_zero_not
+	li $v0, 4
+	la $a0, string_illegal_div_by_0
+	syscall
+	li $v0,10
+	syscall
+Label_12_div_by_zero_not:
+	div $t1,$t2,$t3
+	mflo $t1
+	li $t2,32767
+	li $t3,-32768
+	blt $t2,$t1,Label_10_overflow_max
+	bgt $t3,$t1,Label_11_overflow_min
+	j Label_9_end
+Label_10_overflow_max:
+	li $t1,32767
+	j Label_9_end
+Label_11_overflow_min:
+	li $t1,-32768
+Label_9_end:
+	blt $t0,$t1,Label_14_AssignOne
+	bge $t0,$t1,Label_15_AssignZero
+Label_14_AssignOne:
+	li $t0, 1
+	j Label_13_end
+Label_15_AssignZero:
+	li $t0, 0
+Label_13_end:
+	beq $t0,$zero,Label_6_while_statement_end
+	lw $t1, -8($fp)
+	lw $t0, -16($fp)
+	beq $t1,$zero,invalid_pointer
+	lw $t2, 0($t1)
+	bge $t0,$t2,access_violation
+	blt $t0,$zero,access_violation
+	addi $t2,$t0,1
+	li $t0,4
+	mult $t2,$t0
+	mflo $t2
+	add $t2,$t1,$t2
+	lw $t0, 0($t2)
+	sw $t0, -20($fp)
+	lw $t0, -8($fp)
+	lw $t1, -16($fp)
+	lw $t3, -8($fp)
+	lw $t2, -12($fp)
+	lw $t5, -16($fp)
+	sub $t4,$t2,$t5
+	li $t2,32767
+	li $t5,-32768
+	blt $t2,$t4,Label_17_overflow_max
+	bgt $t5,$t4,Label_18_overflow_min
+	j Label_16_end
+Label_17_overflow_max:
+	li $t4,32767
+	j Label_16_end
+Label_18_overflow_min:
+	li $t4,-32768
+Label_16_end:
+	li $t5,1
+	sub $t2,$t4,$t5
+	li $t4,32767
+	li $t5,-32768
+	blt $t4,$t2,Label_20_overflow_max
+	bgt $t5,$t2,Label_21_overflow_min
+	j Label_19_end
+Label_20_overflow_max:
+	li $t2,32767
+	j Label_19_end
+Label_21_overflow_min:
+	li $t2,-32768
+Label_19_end:
+	beq $t3,$zero,invalid_pointer
+	lw $t4, 0($t3)
+	bge $t2,$t4,access_violation
+	blt $t2,$zero,access_violation
+	addi $t4,$t2,1
+	li $t2,4
+	mult $t4,$t2
+	mflo $t4
+	add $t4,$t3,$t4
+	lw $t2, 0($t4)
+	lw $t3, 0($t0)
+	bge $t1,$t3,access_violation
+	blt $t1,$zero,access_violation
+	addi $t3,$t1,1
+	li $t1,4
+	mult $t3,$t1
+	mflo $t3
+	add $t3,$t0,$t3
+	sw $t2, 0($t3)
+	lw $t0, -8($fp)
+	lw $t1, -12($fp)
+	lw $t3, -16($fp)
+	sub $t2,$t1,$t3
+	li $t1,32767
+	li $t3,-32768
+	blt $t1,$t2,Label_23_overflow_max
+	bgt $t3,$t2,Label_24_overflow_min
+	j Label_22_end
+Label_23_overflow_max:
+	li $t2,32767
+	j Label_22_end
+Label_24_overflow_min:
+	li $t2,-32768
+Label_22_end:
+	li $t3,1
+	sub $t1,$t2,$t3
+	li $t2,32767
+	li $t3,-32768
+	blt $t2,$t1,Label_26_overflow_max
+	bgt $t3,$t1,Label_27_overflow_min
+	j Label_25_end
+Label_26_overflow_max:
+	li $t1,32767
+	j Label_25_end
+Label_27_overflow_min:
+	li $t1,-32768
+Label_25_end:
+	lw $t2, -20($fp)
+	lw $t3, 0($t0)
+	bge $t1,$t3,access_violation
+	blt $t1,$zero,access_violation
+	addi $t3,$t1,1
+	li $t1,4
+	mult $t3,$t1
+	mflo $t3
+	add $t3,$t0,$t3
+	sw $t2, 0($t3)
+	lw $t1, -16($fp)
+	li $t2,1
+	add $t0,$t1,$t2
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_29_overflow_max
+	bgt $t2,$t0,Label_30_overflow_min
+	j Label_28_end
+Label_29_overflow_max:
+	li $t0,32767
+	j Label_28_end
+Label_30_overflow_min:
+	li $t0,-32768
+Label_28_end:
+	sw $t0, -16($fp)
+	j Label_7_while_statement_start
+Label_6_while_statement_end:
+	addi $sp, $sp, -40
+	sw $t0, 0($sp)
+	sw $t1, 4($sp)
+	sw $t2, 8($sp)
+	sw $t3, 12($sp)
+	sw $t4, 16($sp)
+	sw $t5, 20($sp)
+	sw $t6, 24($sp)
+	sw $t7, 28($sp)
+	sw $a0, 32($sp)
+	sw $a1, 36($sp)
+	# Allocating stack for arguments
+	addi $sp, $sp, -4
+	move $a2, $sp
+	lw $t1, -8($fp)
+	li $t0,0
+	beq $t1,$zero,invalid_pointer
+	lw $t2, 0($t1)
+	bge $t0,$t2,access_violation
+	blt $t0,$zero,access_violation
+	addi $t2,$t0,1
+	li $t0,4
+	mult $t2,$t0
+	mflo $t2
+	add $t2,$t1,$t2
+	lw $t0, 0($t2)
+	addi $a0,$t0,0
+	li $v0,4
+	syscall
+	# Deallocating stack for arguments
+	addi $sp, $sp, 4
+	lw $t0, 0($sp)
+	lw $t1, 4($sp)
+	lw $t2, 8($sp)
+	lw $t3, 12($sp)
+	lw $t4, 16($sp)
+	lw $t5, 20($sp)
+	lw $t6, 24($sp)
+	lw $t7, 28($sp)
+	lw $a0, 32($sp)
+	lw $a1, 36($sp)
+	addi $sp, $sp, 40
+	move $t0, $v0
+	addi $sp, $sp, -40
+	sw $t0, 0($sp)
+	sw $t1, 4($sp)
+	sw $t2, 8($sp)
+	sw $t3, 12($sp)
+	sw $t4, 16($sp)
+	sw $t5, 20($sp)
+	sw $t6, 24($sp)
+	sw $t7, 28($sp)
+	sw $a0, 32($sp)
+	sw $a1, 36($sp)
+	# Allocating stack for arguments
+	addi $sp, $sp, -4
+	move $a2, $sp
+	lw $t1, -8($fp)
+	li $t0,1
+	beq $t1,$zero,invalid_pointer
+	lw $t2, 0($t1)
+	bge $t0,$t2,access_violation
+	blt $t0,$zero,access_violation
+	addi $t2,$t0,1
+	li $t0,4
+	mult $t2,$t0
+	mflo $t2
+	add $t2,$t1,$t2
+	lw $t0, 0($t2)
+	addi $a0,$t0,0
+	li $v0,4
+	syscall
+	# Deallocating stack for arguments
+	addi $sp, $sp, 4
+	lw $t0, 0($sp)
+	lw $t1, 4($sp)
+	lw $t2, 8($sp)
+	lw $t3, 12($sp)
+	lw $t4, 16($sp)
+	lw $t5, 20($sp)
+	lw $t6, 24($sp)
+	lw $t7, 28($sp)
+	lw $a0, 32($sp)
+	lw $a1, 36($sp)
+	addi $sp, $sp, 40
+	move $t0, $v0
+	addi $sp, $sp, -40
+	sw $t0, 0($sp)
+	sw $t1, 4($sp)
+	sw $t2, 8($sp)
+	sw $t3, 12($sp)
+	sw $t4, 16($sp)
+	sw $t5, 20($sp)
+	sw $t6, 24($sp)
+	sw $t7, 28($sp)
+	sw $a0, 32($sp)
+	sw $a1, 36($sp)
+	# Allocating stack for arguments
+	addi $sp, $sp, -4
+	move $a2, $sp
+	lw $t1, -8($fp)
+	li $t0,2
+	beq $t1,$zero,invalid_pointer
+	lw $t2, 0($t1)
+	bge $t0,$t2,access_violation
+	blt $t0,$zero,access_violation
+	addi $t2,$t0,1
+	li $t0,4
+	mult $t2,$t0
+	mflo $t2
+	add $t2,$t1,$t2
+	lw $t0, 0($t2)
+	addi $a0,$t0,0
+	li $v0,4
+	syscall
+	# Deallocating stack for arguments
+	addi $sp, $sp, 4
+	lw $t0, 0($sp)
+	lw $t1, 4($sp)
+	lw $t2, 8($sp)
+	lw $t3, 12($sp)
+	lw $t4, 16($sp)
+	lw $t5, 20($sp)
+	lw $t6, 24($sp)
+	lw $t7, 28($sp)
+	lw $a0, 32($sp)
+	lw $a1, 36($sp)
+	addi $sp, $sp, 40
+	move $t0, $v0
+	addi $sp, $sp, -40
+	sw $t0, 0($sp)
+	sw $t1, 4($sp)
+	sw $t2, 8($sp)
+	sw $t3, 12($sp)
+	sw $t4, 16($sp)
+	sw $t5, 20($sp)
+	sw $t6, 24($sp)
+	sw $t7, 28($sp)
+	sw $a0, 32($sp)
+	sw $a1, 36($sp)
+	# Allocating stack for arguments
+	addi $sp, $sp, -4
+	move $a2, $sp
+	lw $t1, -8($fp)
+	li $t0,3
+	beq $t1,$zero,invalid_pointer
+	lw $t2, 0($t1)
+	bge $t0,$t2,access_violation
+	blt $t0,$zero,access_violation
+	addi $t2,$t0,1
+	li $t0,4
+	mult $t2,$t0
+	mflo $t2
+	add $t2,$t1,$t2
+	lw $t0, 0($t2)
+	addi $a0,$t0,0
+	li $v0,4
+	syscall
+	# Deallocating stack for arguments
+	addi $sp, $sp, 4
+	lw $t0, 0($sp)
+	lw $t1, 4($sp)
+	lw $t2, 8($sp)
+	lw $t3, 12($sp)
+	lw $t4, 16($sp)
+	lw $t5, 20($sp)
+	lw $t6, 24($sp)
+	lw $t7, 28($sp)
+	lw $a0, 32($sp)
+	lw $a1, 36($sp)
+	addi $sp, $sp, 40
+	move $t0, $v0
+Label_5_Func_main_end:
+	addi $sp, $sp, 20
+	lw	$fp, ($sp)
+	lw	$ra, 4($sp)
+	addi $sp, $sp, 8
+	li $v0,10
+	syscall

@@ -1,0 +1,223 @@
+/*************/
+/* IMPORT(S) */
+/*************/
+import java_cup.runtime.*;
+import AST.*;
+import Globals.*;
+
+parser code
+{:
+	public Lexer lexer;
+
+	public Parser(Lexer lexer)
+	{
+		super(lexer);
+		this.lexer = lexer;
+	}
+	public void report_error(String message, Object info)
+	{
+		System.out.print("ERROR >> ");
+		System.out.print("[");
+		System.out.print(lexer.getLine());
+		System.out.print(":");
+		System.out.print(lexer.getCharPos());
+		System.out.print("] ");
+		Globals.error(lexer.getLine());
+		System.exit(0);
+	}
+:}
+
+/************************/
+/* CUSTOMIZE CUP PARSER */
+/************************/
+scan with
+{:
+	Symbol s;
+	Globals.parserLine = lexer.getLine();
+    Globals.parserChar = lexer.getCharPos();
+	s = lexer.next_token();
+	System.out.print(s.sym);
+	if (s.value != null)
+	{
+		System.out.print("(");
+		System.out.print(s.value);
+		System.out.print(")");
+	}
+	System.out.print("\n");
+	return s;
+:};
+
+/*************/
+/* TERMINALS */
+/*************/
+terminal IF;
+terminal LT;
+terminal GT;
+terminal EQ;
+terminal DOT;
+terminal PLUS;
+terminal MINUS;
+terminal TIMES;
+terminal CLASS;
+terminal COMMA;
+terminal WHILE;
+terminal RETURN;
+terminal DIVIDE;
+terminal LPAREN;
+terminal RPAREN;
+terminal LBRACK;
+terminal RBRACK;
+terminal LBRACE;
+terminal RBRACE;
+terminal ASSIGN;
+terminal SEMICOLON;
+terminal EXTENDS;
+terminal NEW;
+terminal ARRAY;
+terminal NIL;
+terminal VOID;
+
+/*************/
+/* TERMINALS */
+/*************/
+terminal String ID;
+terminal Integer INT;
+terminal Integer MAXINT;
+terminal String STRING;
+
+/*****************/
+/* NON TERMINALS */
+/*****************/
+non terminal AST_DEC		dec;
+non terminal AST_DEC_VAR	varDec;
+non terminal AST_DEC_FUNC	funcDec;
+non terminal AST_DEC_CLASS	classDec;
+non terminal AST_DEC_ARRAY	arrayDec;
+non terminal AST_DEC_LIST	decList;
+
+/*****************/
+/* NON TERMINALS */
+/*****************/
+non terminal AST_EXP exp;
+non terminal AST_EXP_VAR	varExp;
+non terminal AST_EXP_CALL	callExp;
+non terminal AST_EXP_BINOP	binopExp;
+non terminal AST_EXP_LIST	expListComma;
+non terminal AST_NEWEXP		newExp;
+
+/*****************/
+/* NON TERMINALS */
+/*****************/
+non terminal AST_STMT stmt;
+non terminal AST_STMT_LIST stmtList;
+
+/*****************/
+/* NON TERMINALS */
+/*****************/
+non terminal AST_TYPE_NAME		typeName;
+non terminal AST_TYPE_NAME_LIST	typeNameListComma;
+non terminal AST_TYPE_NAME_LIST	typeNameListSemicolon;
+non terminal AST_CFIELD			cField;
+non terminal AST_CFIELD_LIST	cFieldList;
+
+
+/***********************/
+/* OPERATOR PRECEDENCE */
+/***********************/
+precedence left ASSIGN;
+precedence left EQ;
+precedence left GT, LT;
+precedence left PLUS, MINUS;
+precedence left TIMES, DIVIDE;
+precedence left LBRACK;
+precedence left LPAREN;
+precedence left DOT;
+
+/************************/
+/* START WITH: stmtList */
+/************************/
+start with decList;
+
+/********************/
+/* DERIVATION RULES */
+/********************/
+decList		::=		dec:d decList:l	{: RESULT = new AST_DEC_LIST(d,l); RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar;    :}
+					| dec:d			{: RESULT = new AST_DEC_LIST(d,null); RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar; :};
+
+dec			::=		varDec:d		{: RESULT = d; :}
+					| funcDec:d		{: RESULT = d; :}
+					| classDec:d	{: RESULT = d; :}
+					| arrayDec:d	{: RESULT = d; :};
+
+varDec		::=		ID:type ID:var SEMICOLON	            {: RESULT = new AST_DEC_VAR(type,var,null, null); RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar; :}
+					| ID:type ID:var ASSIGN exp:e SEMICOLON {: RESULT = new AST_DEC_VAR(type,var,e, null); RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar;    :}
+					| ID:type ID:var ASSIGN newExp:e SEMICOLON {: RESULT = new AST_DEC_VAR(type,var, null, e); RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar;    :};
+
+funcDec		::=		ID:ret ID:name LPAREN typeNameListComma:tnl RPAREN LBRACE stmtList:body RBRACE
+					{: RESULT = new AST_DEC_FUNC(ret,name,tnl,body); RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar; :}
+					| ID:ret ID:name LPAREN RPAREN LBRACE stmtList:body RBRACE
+					{: RESULT = new AST_DEC_FUNC(ret,name,null,body); RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar; :};
+
+classDec	::=		CLASS ID:name LBRACE cFieldList:l RBRACE	{: RESULT = new AST_DEC_CLASS(name,l, null); RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar; :}
+					| CLASS ID:name EXTENDS ID:father LBRACE cFieldList:l RBRACE	{: RESULT = new AST_DEC_CLASS(name,l, father); RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar; :};
+
+arrayDec	::=		ARRAY ID:name EQ ID:typeArr LBRACK RBRACK		{: RESULT = new AST_DEC_ARRAY(name, typeArr); RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar;:};
+
+stmtList	::=		stmt:s stmtList:l	{: RESULT = new AST_STMT_LIST(s,l); RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar;    :}
+					| stmt:s			{: RESULT = new AST_STMT_LIST(s,null); RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar; :};
+
+stmt		::=		varDec:v                                                    {: RESULT = new AST_STMT_DEC_VAR(v); RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar;       :}
+					| callExp:callExp SEMICOLON									{: RESULT = new AST_STMT_CALL(callExp); RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar;   :}
+					| RETURN exp:e SEMICOLON									{: RESULT = new AST_STMT_RETURN(e); RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar;        :}
+					| RETURN SEMICOLON											{: RESULT = new AST_STMT_RETURN(null); RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar;       :}
+					| varExp:v ASSIGN exp:e SEMICOLON							{: RESULT = new AST_STMT_ASSIGN(v,e, null); RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar;     :}
+					| varExp:v ASSIGN newExp:e SEMICOLON							{: RESULT = new AST_STMT_ASSIGN(v, null, e);RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar;      :}
+					| IF    LPAREN exp:cond RPAREN LBRACE stmtList:body RBRACE	{: RESULT = new AST_STMT_IF(cond,body); RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar;:}
+					| WHILE LPAREN exp:cond RPAREN LBRACE stmtList:body RBRACE	{: RESULT = new AST_STMT_WHILE(cond,body); RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar;:};
+
+exp			::=		INT:i			{: RESULT = new AST_EXP_INT(i); RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar;   :}
+					| MINUS INT:i	{: RESULT = new AST_EXP_INT(-i);RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar;	:}
+					| MINUS MAXINT:i	{: RESULT = new AST_EXP_INT(-i);RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar;	:}
+					| STRING:s		{: RESULT = new AST_EXP_STRING(s); RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar;:}
+					| NIL   		{: RESULT = new AST_EXP_NIL();	RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar;   :}
+					| varExp:v		{: RESULT = v; :}
+					| callExp:e		{: RESULT = e; :}
+					| LPAREN exp:e RPAREN	{: RESULT = e; :}
+					| binopExp:e	{: RESULT = e; :};
+
+varExp		::=		ID:name							{: RESULT = new AST_EXP_VAR_SIMPLE(name); RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar;       :}
+					| varExp:v DOT ID:fieldName		{: RESULT = new AST_EXP_VAR_FIELD(v,fieldName); RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar; :}
+					| varExp:v LBRACK exp:e RBRACK	{: RESULT = new AST_EXP_VAR_SUBSCRIPT(v,e); RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar;    :}
+					| varExp:v LBRACK RBRACK	    {: RESULT = new AST_EXP_VAR_SUBSCRIPT(v,null); RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar;     :};
+
+binopExp	::=		exp:e1 EQ exp:e2		{: RESULT = new AST_EXP_BINOP(e1,e2,0); RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar; :}
+					| exp:e1 LT exp:e2	{: RESULT = new AST_EXP_BINOP(e1,e2,1); RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar; :}
+					| exp:e1 GT exp:e2	{: RESULT = new AST_EXP_BINOP(e1,e2,2); RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar; :}
+					| exp:e1 PLUS exp:e2		{: RESULT = new AST_EXP_BINOP(e1,e2,3); RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar; :}
+					| exp:e1 MINUS exp:e2		{: RESULT = new AST_EXP_BINOP(e1,e2,4); RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar; :}
+					| exp:e1 TIMES exp:e2	{: RESULT = new AST_EXP_BINOP(e1,e2,5); RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar; :}
+					| exp:e1 DIVIDE exp:e2	{: RESULT = new AST_EXP_BINOP(e1,e2,6); RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar; :};
+
+newExp		::=		NEW ID:name										{: RESULT = new AST_NEWEXP(name, null); RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar; :}
+					| NEW ID:name LBRACK RBRACK				        {: RESULT = new AST_NEWEXP(name, null, true); RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar; :}
+					| NEW ID:name LBRACK exp:e RBRACK				{: RESULT = new AST_NEWEXP(name, e, true); RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar; :};
+
+callExp		::=		ID:funcName LPAREN expListComma:el RPAREN	{: RESULT = new AST_EXP_CALL(funcName,el); RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar; :}
+					| ID:funcName LPAREN RPAREN	{: RESULT = new AST_EXP_CALL(funcName,null);RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar; :}
+					| varExp:v DOT ID:funcName LPAREN expListComma:el RPAREN	{: RESULT = new AST_EXP_CALL(funcName,el,v);RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar; :}
+					| varExp:v DOT ID:funcName LPAREN RPAREN	{: RESULT = new AST_EXP_CALL(funcName,null,v);RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar; :};
+
+expListComma	::=		exp:e COMMA expListComma:el	{: RESULT = new AST_EXP_LIST(e,el); RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar;  :}
+						| exp:e						{: RESULT = new AST_EXP_LIST(e,null);RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar; :};
+
+typeName				::=		ID:type ID:name									{: RESULT = new AST_TYPE_NAME(type,name); RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar;   :};
+typeNameListComma		::=		typeName:tn COMMA typeNameListComma:tnl			{: RESULT = new AST_TYPE_NAME_LIST(tn,tnl);RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar;  :}
+								| typeName:tn									{: RESULT = new AST_TYPE_NAME_LIST(tn,null);RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar; :};
+typeNameListSemicolon	::=		typeName:tn SEMICOLON typeNameListSemicolon:tnl	{: RESULT = new AST_TYPE_NAME_LIST(tn,tnl);RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar;  :}
+								| typeName:tn SEMICOLON                         {: RESULT = new AST_TYPE_NAME_LIST(tn,null);RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar; :};
+
+cField					::=		funcDec:fd					{:RESULT = new AST_CFIELD(fd);RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar; :}
+								| varDec:vd					{:RESULT = new AST_CFIELD(vd);RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar; :};
+cFieldList				::=		cField:cf cFieldList:cfl	{: RESULT = new AST_CFIELD_LIST(cf, cfl);RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar; :}
+								| cField:cf					{: RESULT = new AST_CFIELD_LIST(cf, null);RESULT.lineNum = Globals.parserLine;RESULT.charNum=Globals.parserChar; :};
+

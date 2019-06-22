@@ -1,0 +1,287 @@
+.data
+string_access_violation: .asciiz "Access Violation"
+string_illegal_div_by_0: .asciiz "Division By Zero"
+string_invalid_ptr_dref: .asciiz "Invalid Pointer Dereference"
+Label_0_StringLiteral: .asciiz "main"
+global_i: .word 0
+global_j: .word 0
+global_p: .word 0
+global_defLine: .word 0
+global_endLine: .word 0
+global_isPrime: .word 0
+global_copyp: .word 0
+global_copyisPrime: .word 0
+.text
+main:
+	la $t0, global_i
+	sw $zero, 0($t0)
+	la $t0, global_j
+	sw $zero, 0($t0)
+	la $t0, global_p
+	sw $zero, 0($t0)
+	la $t0, global_defLine
+	sw $zero, 0($t0)
+	la $t0, global_endLine
+	sw $zero, 0($t0)
+	la $t0, global_isPrime
+	sw $zero, 0($t0)
+	la $t0, global_copyp
+	sw $zero, 0($t0)
+	la $t0, global_copyisPrime
+	sw $zero, 0($t0)
+	j __main__
+	# Begin error handlers:
+access_violation:
+	li $v0, 4
+	la $a0, string_access_violation
+	syscall
+	li $v0,10
+	syscall
+invalid_pointer:
+	li $v0, 4
+	la $a0, string_invalid_ptr_dref
+	syscall
+	li $v0,10
+	syscall
+__main__:
+	la $t0, Label_0_StringLiteral
+	addi $sp, $sp, -8
+	sw $ra, 4($sp)
+	sub $fp, $fp, $fp
+	sw $fp, 0($sp)
+	move $fp, $sp
+	addi $sp, $sp, -4
+	sw $t0, 0($sp)
+	addi $sp, $sp, 0
+Label_12_prolog_end_main:
+	# func prolog end
+	li $t0,2
+	la $t1, global_p
+	sw $t0, 0($t1)
+	li $t0,2
+	la $t1, global_defLine
+	sw $t0, 0($t1)
+	li $t0,60
+	la $t1, global_endLine
+	sw $t0, 0($t1)
+Label_3_while_statement_start:
+	la $t0, global_p
+	lw $t0,0($t0)
+	la $t2, global_endLine
+	lw $t2,0($t2)
+	li $t3,1
+	add $t1,$t2,$t3
+	li $t2,32767
+	li $t3,-32768
+	blt $t2,$t1,Label_14_overflow_max
+	bgt $t3,$t1,Label_15_overflow_min
+	j Label_13_end
+Label_14_overflow_max:
+	li $t1,32767
+	j Label_13_end
+Label_15_overflow_min:
+	li $t1,-32768
+Label_13_end:
+	blt $t0,$t1,Label_17_AssignOne
+	bge $t0,$t1,Label_18_AssignZero
+Label_17_AssignOne:
+	li $t0, 1
+	j Label_16_end
+Label_18_AssignZero:
+	li $t0, 0
+Label_16_end:
+	beq $t0,$zero,Label_2_while_statement_end
+	li $t0,2
+	la $t1, global_i
+	sw $t0, 0($t1)
+	li $t0,2
+	la $t1, global_j
+	sw $t0, 0($t1)
+	li $t0,1
+	la $t1, global_isPrime
+	sw $t0, 0($t1)
+Label_5_while_statement_start:
+	la $t0, global_i
+	lw $t0,0($t0)
+	la $t1, global_p
+	lw $t1,0($t1)
+	blt $t0,$t1,Label_20_AssignOne
+	bge $t0,$t1,Label_21_AssignZero
+Label_20_AssignOne:
+	li $t0, 1
+	j Label_19_end
+Label_21_AssignZero:
+	li $t0, 0
+Label_19_end:
+	beq $t0,$zero,Label_4_while_statement_end
+	li $t0,2
+	la $t1, global_j
+	sw $t0, 0($t1)
+Label_7_while_statement_start:
+	la $t0, global_j
+	lw $t0,0($t0)
+	la $t1, global_p
+	lw $t1,0($t1)
+	blt $t0,$t1,Label_23_AssignOne
+	bge $t0,$t1,Label_24_AssignZero
+Label_23_AssignOne:
+	li $t0, 1
+	j Label_22_end
+Label_24_AssignZero:
+	li $t0, 0
+Label_22_end:
+	beq $t0,$zero,Label_6_while_statement_end
+	la $t0, global_p
+	lw $t0,0($t0)
+	la $t1, global_copyp
+	sw $t0, 0($t1)
+Label_9_while_statement_start:
+	la $t0, global_i
+	lw $t0,0($t0)
+	la $t1, global_j
+	lw $t1,0($t1)
+	mult $t0,$t1
+	mflo $t0
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_26_overflow_max
+	bgt $t2,$t0,Label_27_overflow_min
+	j Label_25_end
+Label_26_overflow_max:
+	li $t0,32767
+	j Label_25_end
+Label_27_overflow_min:
+	li $t0,-32768
+Label_25_end:
+	la $t1, global_copyp
+	lw $t1,0($t1)
+	beq $t0,$t1,Label_29_AssignOne
+	bne $t0,$t1,Label_30_AssignZero
+Label_29_AssignOne:
+	li $t0, 1
+	j Label_28_end
+Label_30_AssignZero:
+	li $t0, 0
+Label_28_end:
+	beq $t0,$zero,Label_8_while_statement_end
+	li $t0,0
+	la $t1, global_isPrime
+	sw $t0, 0($t1)
+	li $t0,0
+	la $t1, global_copyp
+	sw $t0, 0($t1)
+	j Label_9_while_statement_start
+Label_8_while_statement_end:
+	la $t1, global_j
+	lw $t1,0($t1)
+	li $t2,1
+	add $t0,$t1,$t2
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_32_overflow_max
+	bgt $t2,$t0,Label_33_overflow_min
+	j Label_31_end
+Label_32_overflow_max:
+	li $t0,32767
+	j Label_31_end
+Label_33_overflow_min:
+	li $t0,-32768
+Label_31_end:
+	la $t1, global_j
+	sw $t0, 0($t1)
+	j Label_7_while_statement_start
+Label_6_while_statement_end:
+	la $t1, global_i
+	lw $t1,0($t1)
+	li $t2,1
+	add $t0,$t1,$t2
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_35_overflow_max
+	bgt $t2,$t0,Label_36_overflow_min
+	j Label_34_end
+Label_35_overflow_max:
+	li $t0,32767
+	j Label_34_end
+Label_36_overflow_min:
+	li $t0,-32768
+Label_34_end:
+	la $t1, global_i
+	sw $t0, 0($t1)
+	j Label_5_while_statement_start
+Label_4_while_statement_end:
+	la $t0, global_isPrime
+	lw $t0,0($t0)
+	la $t1, global_copyisPrime
+	sw $t0, 0($t1)
+Label_11_while_statement_start:
+	la $t0, global_copyisPrime
+	lw $t0,0($t0)
+	beq $t0,$zero,Label_10_while_statement_end
+	addi $sp, $sp, -40
+	sw $t0, 0($sp)
+	sw $t1, 4($sp)
+	sw $t2, 8($sp)
+	sw $t3, 12($sp)
+	sw $t4, 16($sp)
+	sw $t5, 20($sp)
+	sw $t6, 24($sp)
+	sw $t7, 28($sp)
+	sw $a0, 32($sp)
+	sw $a1, 36($sp)
+	# Allocating stack for arguments
+	addi $sp, $sp, -4
+	move $a2, $sp
+	la $t0, global_p
+	lw $t0,0($t0)
+	move $a0,$t0
+	li $v0,1
+	syscall
+	li $a0,32
+	li $v0,11
+	syscall
+	# Deallocating stack for arguments
+	addi $sp, $sp, 4
+	lw $t0, 0($sp)
+	lw $t1, 4($sp)
+	lw $t2, 8($sp)
+	lw $t3, 12($sp)
+	lw $t4, 16($sp)
+	lw $t5, 20($sp)
+	lw $t6, 24($sp)
+	lw $t7, 28($sp)
+	lw $a0, 32($sp)
+	lw $a1, 36($sp)
+	addi $sp, $sp, 40
+	move $t0, $v0
+	li $t0,0
+	la $t1, global_copyisPrime
+	sw $t0, 0($t1)
+	j Label_11_while_statement_start
+Label_10_while_statement_end:
+	la $t1, global_p
+	lw $t1,0($t1)
+	li $t2,1
+	add $t0,$t1,$t2
+	li $t1,32767
+	li $t2,-32768
+	blt $t1,$t0,Label_38_overflow_max
+	bgt $t2,$t0,Label_39_overflow_min
+	j Label_37_end
+Label_38_overflow_max:
+	li $t0,32767
+	j Label_37_end
+Label_39_overflow_min:
+	li $t0,-32768
+Label_37_end:
+	la $t1, global_p
+	sw $t0, 0($t1)
+	j Label_3_while_statement_start
+Label_2_while_statement_end:
+Label_1_Func_main_end:
+	addi $sp, $sp, 4
+	lw	$fp, ($sp)
+	lw	$ra, 4($sp)
+	addi $sp, $sp, 8
+	li $v0,10
+	syscall

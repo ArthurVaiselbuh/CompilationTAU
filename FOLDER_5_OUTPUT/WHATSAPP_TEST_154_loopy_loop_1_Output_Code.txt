@@ -1,0 +1,295 @@
+.data
+string_access_violation: .asciiz "Access Violation"
+string_illegal_div_by_0: .asciiz "Division By Zero"
+string_invalid_ptr_dref: .asciiz "Invalid Pointer Dereference"
+Label_2_StringLiteral: .asciiz "x"
+Label_5_StringLiteral: .asciiz "W"
+Label_6_StringLiteral: .asciiz "xxxxW"
+Label_7_StringLiteral: .asciiz "addx"
+Label_8_StringLiteral: .asciiz "realMain"
+Label_11_StringLiteral: .asciiz "main"
+.text
+main:
+	j __main__
+	# Begin error handlers:
+access_violation:
+	li $v0, 4
+	la $a0, string_access_violation
+	syscall
+	li $v0,10
+	syscall
+invalid_pointer:
+	li $v0, 4
+	la $a0, string_invalid_ptr_dref
+	syscall
+	li $v0,10
+	syscall
+Label_0_Func_addx:
+	la $t0, Label_7_StringLiteral
+	addi $sp, $sp, -8
+	sw $ra, 4($sp)
+	sw $fp, 0($sp)
+	move $fp, $sp
+	addi $sp, $sp, -4
+	sw $t0, 0($sp)
+	addi $sp, $sp, 0
+Label_13_prolog_end_addx:
+	# func prolog end
+	la $t1, Label_2_StringLiteral
+	lw $t2, 0($a0)
+	li $t0,1
+	move $t4,$t1
+Label_14_Length_String:
+	lb $t3, 0($t4)
+	addi $t0, $t0, 1
+	addi $t4, $t4, 1
+	bnez $t3, Label_14_Length_String
+	addi $t0, $t0, -1
+	move $t4,$t2
+Label_15_Length_String:
+	lb $t3, 0($t4)
+	addi $t0, $t0, 1
+	addi $t4, $t4, 1
+	bnez $t3, Label_15_Length_String
+	addi $t0, $t0, -1
+	addi $sp, $sp, -4
+	sw $a0, 0($sp)
+	addi $a0, $t0, 0
+	li $v0, 9
+	syscall
+	addi $t0, $v0, 0
+	lw $a0, 0($sp)
+	addi $sp, $sp, 4
+	move $t5,$t0
+	move $t4,$t1
+Label_16_Concat_String1:
+	lb $t3, 0($t4)
+	sb $t3, 0($t5)
+	addi $t4, $t4, 1
+	addi $t5, $t5, 1
+	bnez $t3, Label_16_Concat_String1
+	addi $t5, $t5, -1
+	move $t4,$t2
+Label_17_Concat_String1:
+	lb $t3, 0($t4)
+	sb $t3, 0($t5)
+	addi $t4, $t4, 1
+	addi $t5, $t5, 1
+	bnez $t3, Label_17_Concat_String1
+	addi $t5, $t5, -1
+	move $v0, $t0
+	j Label_1_Func_addx_end
+Label_1_Func_addx_end:
+	addi $sp, $sp, 4
+	lw	$fp, ($sp)
+	lw	$ra, 4($sp)
+	addi $sp, $sp, 8
+	jr $ra
+Label_3_Func_realMain:
+	la $t0, Label_8_StringLiteral
+	addi $sp, $sp, -8
+	sw $ra, 4($sp)
+	sw $fp, 0($sp)
+	move $fp, $sp
+	addi $sp, $sp, -4
+	sw $t0, 0($sp)
+	addi $sp, $sp, -4
+Label_18_prolog_end_realMain:
+	# func prolog end
+	la $t0, Label_5_StringLiteral
+	sw $t0, -8($fp)
+Label_10_while_statement_start:
+	lw $t0, -8($fp)
+	la $t1, Label_6_StringLiteral
+	move $t2,$t0
+	move $t3,$t1
+Label_22_Comp_Loop:
+	lb $t0, 0($t2)
+	lb $t1, 0($t3)
+	bne $t0, $t1, Label_20_AssignOne
+	beq $t0, $zero, Label_21_AssignZero
+	addi $t2, $t2, 1
+	addi $t3, $t3, 1
+	j Label_22_Comp_Loop
+Label_20_AssignOne:
+	li $t0, 1
+	j Label_19_end
+Label_21_AssignZero:
+	li $t0, 0
+Label_19_end:
+	li $t1,1
+	beq $t0,$t1,Label_24_AssignOne
+	bne $t0,$t1,Label_25_AssignZero
+Label_24_AssignOne:
+	li $t0, 1
+	j Label_23_end
+Label_25_AssignZero:
+	li $t0, 0
+Label_23_end:
+	beq $t0,$zero,Label_9_while_statement_end
+	addi $sp, $sp, -40
+	sw $t0, 0($sp)
+	sw $t1, 4($sp)
+	sw $t2, 8($sp)
+	sw $t3, 12($sp)
+	sw $t4, 16($sp)
+	sw $t5, 20($sp)
+	sw $t6, 24($sp)
+	sw $t7, 28($sp)
+	sw $a0, 32($sp)
+	sw $a1, 36($sp)
+	# Allocating stack for arguments
+	addi $sp, $sp, -4
+	move $a2, $sp
+	lw $t0, -8($fp)
+	addi $a0,$t0,0
+	li $v0,4
+	syscall
+	# Deallocating stack for arguments
+	addi $sp, $sp, 4
+	lw $t0, 0($sp)
+	lw $t1, 4($sp)
+	lw $t2, 8($sp)
+	lw $t3, 12($sp)
+	lw $t4, 16($sp)
+	lw $t5, 20($sp)
+	lw $t6, 24($sp)
+	lw $t7, 28($sp)
+	lw $a0, 32($sp)
+	lw $a1, 36($sp)
+	addi $sp, $sp, 40
+	move $t0, $v0
+	addi $sp, $sp, -40
+	sw $t0, 0($sp)
+	sw $t1, 4($sp)
+	sw $t2, 8($sp)
+	sw $t3, 12($sp)
+	sw $t4, 16($sp)
+	sw $t5, 20($sp)
+	sw $t6, 24($sp)
+	sw $t7, 28($sp)
+	sw $a0, 32($sp)
+	sw $a1, 36($sp)
+	# Allocating stack for arguments
+	addi $sp, $sp, -4
+	move $a2, $sp
+	addi $sp, $sp, -4
+	sw $a2, 0($sp)
+	lw $t0, -8($fp)
+	lw $a2, 0($sp)
+	addi $sp, $sp, 4
+	sw $t0, 0($a2)
+	addi $sp, $sp, -4
+	sw $a0, 0($sp)
+	move $a0,$a2
+	jal Label_0_Func_addx
+	lw $a0, 0($sp)
+	addi $sp, $sp, 4
+	# Deallocating stack for arguments
+	addi $sp, $sp, 4
+	lw $t0, 0($sp)
+	lw $t1, 4($sp)
+	lw $t2, 8($sp)
+	lw $t3, 12($sp)
+	lw $t4, 16($sp)
+	lw $t5, 20($sp)
+	lw $t6, 24($sp)
+	lw $t7, 28($sp)
+	lw $a0, 32($sp)
+	lw $a1, 36($sp)
+	addi $sp, $sp, 40
+	move $t0, $v0
+	sw $t0, -8($fp)
+	j Label_10_while_statement_start
+Label_9_while_statement_end:
+	addi $sp, $sp, -40
+	sw $t0, 0($sp)
+	sw $t1, 4($sp)
+	sw $t2, 8($sp)
+	sw $t3, 12($sp)
+	sw $t4, 16($sp)
+	sw $t5, 20($sp)
+	sw $t6, 24($sp)
+	sw $t7, 28($sp)
+	sw $a0, 32($sp)
+	sw $a1, 36($sp)
+	# Allocating stack for arguments
+	addi $sp, $sp, -4
+	move $a2, $sp
+	lw $t0, -8($fp)
+	addi $a0,$t0,0
+	li $v0,4
+	syscall
+	# Deallocating stack for arguments
+	addi $sp, $sp, 4
+	lw $t0, 0($sp)
+	lw $t1, 4($sp)
+	lw $t2, 8($sp)
+	lw $t3, 12($sp)
+	lw $t4, 16($sp)
+	lw $t5, 20($sp)
+	lw $t6, 24($sp)
+	lw $t7, 28($sp)
+	lw $a0, 32($sp)
+	lw $a1, 36($sp)
+	addi $sp, $sp, 40
+	move $t0, $v0
+Label_4_Func_realMain_end:
+	addi $sp, $sp, 8
+	lw	$fp, ($sp)
+	lw	$ra, 4($sp)
+	addi $sp, $sp, 8
+	jr $ra
+__main__:
+	la $t0, Label_11_StringLiteral
+	addi $sp, $sp, -8
+	sw $ra, 4($sp)
+	sub $fp, $fp, $fp
+	sw $fp, 0($sp)
+	move $fp, $sp
+	addi $sp, $sp, -4
+	sw $t0, 0($sp)
+	addi $sp, $sp, 0
+Label_26_prolog_end_main:
+	# func prolog end
+	addi $sp, $sp, -40
+	sw $t0, 0($sp)
+	sw $t1, 4($sp)
+	sw $t2, 8($sp)
+	sw $t3, 12($sp)
+	sw $t4, 16($sp)
+	sw $t5, 20($sp)
+	sw $t6, 24($sp)
+	sw $t7, 28($sp)
+	sw $a0, 32($sp)
+	sw $a1, 36($sp)
+	# Allocating stack for arguments
+	addi $sp, $sp, 0
+	move $a2, $sp
+	addi $sp, $sp, -4
+	sw $a0, 0($sp)
+	move $a0,$a2
+	jal Label_3_Func_realMain
+	lw $a0, 0($sp)
+	addi $sp, $sp, 4
+	# Deallocating stack for arguments
+	addi $sp, $sp, 0
+	lw $t0, 0($sp)
+	lw $t1, 4($sp)
+	lw $t2, 8($sp)
+	lw $t3, 12($sp)
+	lw $t4, 16($sp)
+	lw $t5, 20($sp)
+	lw $t6, 24($sp)
+	lw $t7, 28($sp)
+	lw $a0, 32($sp)
+	lw $a1, 36($sp)
+	addi $sp, $sp, 40
+	move $t0, $v0
+Label_12_Func_main_end:
+	addi $sp, $sp, 4
+	lw	$fp, ($sp)
+	lw	$ra, 4($sp)
+	addi $sp, $sp, 8
+	li $v0,10
+	syscall

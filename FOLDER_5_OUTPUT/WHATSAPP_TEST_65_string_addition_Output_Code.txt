@@ -1,0 +1,393 @@
+.data
+string_access_violation: .asciiz "Access Violation"
+string_illegal_div_by_0: .asciiz "Division By Zero"
+string_invalid_ptr_dref: .asciiz "Invalid Pointer Dereference"
+Label_0_StringLiteral: .asciiz "Hello"
+Label_1_StringLiteral: .asciiz "Bye"
+Label_2_StringLiteral: .asciiz "ok"
+Label_3_StringLiteral: .asciiz "ok"
+Label_4_StringLiteral: .asciiz "a"
+Label_5_StringLiteral: .asciiz "b"
+Label_6_StringLiteral: .asciiz "c"
+Label_7_StringLiteral: .asciiz "main"
+.text
+main:
+	j __main__
+	# Begin error handlers:
+access_violation:
+	li $v0, 4
+	la $a0, string_access_violation
+	syscall
+	li $v0,10
+	syscall
+invalid_pointer:
+	li $v0, 4
+	la $a0, string_invalid_ptr_dref
+	syscall
+	li $v0,10
+	syscall
+__main__:
+	la $t0, Label_7_StringLiteral
+	addi $sp, $sp, -8
+	sw $ra, 4($sp)
+	sub $fp, $fp, $fp
+	sw $fp, 0($sp)
+	move $fp, $sp
+	addi $sp, $sp, -4
+	sw $t0, 0($sp)
+	addi $sp, $sp, -8
+Label_9_prolog_end_main:
+	# func prolog end
+	la $t0, Label_0_StringLiteral
+	sw $t0, -8($fp)
+	la $t0, Label_1_StringLiteral
+	sw $t0, -12($fp)
+	addi $sp, $sp, -40
+	sw $t0, 0($sp)
+	sw $t1, 4($sp)
+	sw $t2, 8($sp)
+	sw $t3, 12($sp)
+	sw $t4, 16($sp)
+	sw $t5, 20($sp)
+	sw $t6, 24($sp)
+	sw $t7, 28($sp)
+	sw $a0, 32($sp)
+	sw $a1, 36($sp)
+	# Allocating stack for arguments
+	addi $sp, $sp, -4
+	move $a2, $sp
+	lw $t1, -8($fp)
+	la $t2, Label_2_StringLiteral
+	li $t0,1
+	move $t4,$t1
+Label_10_Length_String:
+	lb $t3, 0($t4)
+	addi $t0, $t0, 1
+	addi $t4, $t4, 1
+	bnez $t3, Label_10_Length_String
+	addi $t0, $t0, -1
+	move $t4,$t2
+Label_11_Length_String:
+	lb $t3, 0($t4)
+	addi $t0, $t0, 1
+	addi $t4, $t4, 1
+	bnez $t3, Label_11_Length_String
+	addi $t0, $t0, -1
+	addi $sp, $sp, -4
+	sw $a0, 0($sp)
+	addi $a0, $t0, 0
+	li $v0, 9
+	syscall
+	addi $t0, $v0, 0
+	lw $a0, 0($sp)
+	addi $sp, $sp, 4
+	move $t5,$t0
+	move $t4,$t1
+Label_12_Concat_String1:
+	lb $t3, 0($t4)
+	sb $t3, 0($t5)
+	addi $t4, $t4, 1
+	addi $t5, $t5, 1
+	bnez $t3, Label_12_Concat_String1
+	addi $t5, $t5, -1
+	move $t4,$t2
+Label_13_Concat_String1:
+	lb $t3, 0($t4)
+	sb $t3, 0($t5)
+	addi $t4, $t4, 1
+	addi $t5, $t5, 1
+	bnez $t3, Label_13_Concat_String1
+	addi $t5, $t5, -1
+	addi $a0,$t0,0
+	li $v0,4
+	syscall
+	# Deallocating stack for arguments
+	addi $sp, $sp, 4
+	lw $t0, 0($sp)
+	lw $t1, 4($sp)
+	lw $t2, 8($sp)
+	lw $t3, 12($sp)
+	lw $t4, 16($sp)
+	lw $t5, 20($sp)
+	lw $t6, 24($sp)
+	lw $t7, 28($sp)
+	lw $a0, 32($sp)
+	lw $a1, 36($sp)
+	addi $sp, $sp, 40
+	move $t0, $v0
+	addi $sp, $sp, -40
+	sw $t0, 0($sp)
+	sw $t1, 4($sp)
+	sw $t2, 8($sp)
+	sw $t3, 12($sp)
+	sw $t4, 16($sp)
+	sw $t5, 20($sp)
+	sw $t6, 24($sp)
+	sw $t7, 28($sp)
+	sw $a0, 32($sp)
+	sw $a1, 36($sp)
+	# Allocating stack for arguments
+	addi $sp, $sp, -4
+	move $a2, $sp
+	la $t1, Label_3_StringLiteral
+	lw $t2, -12($fp)
+	li $t0,1
+	move $t4,$t1
+Label_14_Length_String:
+	lb $t3, 0($t4)
+	addi $t0, $t0, 1
+	addi $t4, $t4, 1
+	bnez $t3, Label_14_Length_String
+	addi $t0, $t0, -1
+	move $t4,$t2
+Label_15_Length_String:
+	lb $t3, 0($t4)
+	addi $t0, $t0, 1
+	addi $t4, $t4, 1
+	bnez $t3, Label_15_Length_String
+	addi $t0, $t0, -1
+	addi $sp, $sp, -4
+	sw $a0, 0($sp)
+	addi $a0, $t0, 0
+	li $v0, 9
+	syscall
+	addi $t0, $v0, 0
+	lw $a0, 0($sp)
+	addi $sp, $sp, 4
+	move $t5,$t0
+	move $t4,$t1
+Label_16_Concat_String1:
+	lb $t3, 0($t4)
+	sb $t3, 0($t5)
+	addi $t4, $t4, 1
+	addi $t5, $t5, 1
+	bnez $t3, Label_16_Concat_String1
+	addi $t5, $t5, -1
+	move $t4,$t2
+Label_17_Concat_String1:
+	lb $t3, 0($t4)
+	sb $t3, 0($t5)
+	addi $t4, $t4, 1
+	addi $t5, $t5, 1
+	bnez $t3, Label_17_Concat_String1
+	addi $t5, $t5, -1
+	addi $a0,$t0,0
+	li $v0,4
+	syscall
+	# Deallocating stack for arguments
+	addi $sp, $sp, 4
+	lw $t0, 0($sp)
+	lw $t1, 4($sp)
+	lw $t2, 8($sp)
+	lw $t3, 12($sp)
+	lw $t4, 16($sp)
+	lw $t5, 20($sp)
+	lw $t6, 24($sp)
+	lw $t7, 28($sp)
+	lw $a0, 32($sp)
+	lw $a1, 36($sp)
+	addi $sp, $sp, 40
+	move $t0, $v0
+	addi $sp, $sp, -40
+	sw $t0, 0($sp)
+	sw $t1, 4($sp)
+	sw $t2, 8($sp)
+	sw $t3, 12($sp)
+	sw $t4, 16($sp)
+	sw $t5, 20($sp)
+	sw $t6, 24($sp)
+	sw $t7, 28($sp)
+	sw $a0, 32($sp)
+	sw $a1, 36($sp)
+	# Allocating stack for arguments
+	addi $sp, $sp, -4
+	move $a2, $sp
+	la $t0, Label_4_StringLiteral
+	lw $t2, -8($fp)
+	li $t1,1
+	move $t4,$t0
+Label_18_Length_String:
+	lb $t3, 0($t4)
+	addi $t1, $t1, 1
+	addi $t4, $t4, 1
+	bnez $t3, Label_18_Length_String
+	addi $t1, $t1, -1
+	move $t4,$t2
+Label_19_Length_String:
+	lb $t3, 0($t4)
+	addi $t1, $t1, 1
+	addi $t4, $t4, 1
+	bnez $t3, Label_19_Length_String
+	addi $t1, $t1, -1
+	addi $sp, $sp, -4
+	sw $a0, 0($sp)
+	addi $a0, $t1, 0
+	li $v0, 9
+	syscall
+	addi $t1, $v0, 0
+	lw $a0, 0($sp)
+	addi $sp, $sp, 4
+	move $t5,$t1
+	move $t4,$t0
+Label_20_Concat_String1:
+	lb $t3, 0($t4)
+	sb $t3, 0($t5)
+	addi $t4, $t4, 1
+	addi $t5, $t5, 1
+	bnez $t3, Label_20_Concat_String1
+	addi $t5, $t5, -1
+	move $t4,$t2
+Label_21_Concat_String1:
+	lb $t3, 0($t4)
+	sb $t3, 0($t5)
+	addi $t4, $t4, 1
+	addi $t5, $t5, 1
+	bnez $t3, Label_21_Concat_String1
+	addi $t5, $t5, -1
+	la $t2, Label_5_StringLiteral
+	li $t0,1
+	move $t4,$t1
+Label_22_Length_String:
+	lb $t3, 0($t4)
+	addi $t0, $t0, 1
+	addi $t4, $t4, 1
+	bnez $t3, Label_22_Length_String
+	addi $t0, $t0, -1
+	move $t4,$t2
+Label_23_Length_String:
+	lb $t3, 0($t4)
+	addi $t0, $t0, 1
+	addi $t4, $t4, 1
+	bnez $t3, Label_23_Length_String
+	addi $t0, $t0, -1
+	addi $sp, $sp, -4
+	sw $a0, 0($sp)
+	addi $a0, $t0, 0
+	li $v0, 9
+	syscall
+	addi $t0, $v0, 0
+	lw $a0, 0($sp)
+	addi $sp, $sp, 4
+	move $t5,$t0
+	move $t4,$t1
+Label_24_Concat_String1:
+	lb $t3, 0($t4)
+	sb $t3, 0($t5)
+	addi $t4, $t4, 1
+	addi $t5, $t5, 1
+	bnez $t3, Label_24_Concat_String1
+	addi $t5, $t5, -1
+	move $t4,$t2
+Label_25_Concat_String1:
+	lb $t3, 0($t4)
+	sb $t3, 0($t5)
+	addi $t4, $t4, 1
+	addi $t5, $t5, 1
+	bnez $t3, Label_25_Concat_String1
+	addi $t5, $t5, -1
+	lw $t2, -12($fp)
+	li $t1,1
+	move $t4,$t0
+Label_26_Length_String:
+	lb $t3, 0($t4)
+	addi $t1, $t1, 1
+	addi $t4, $t4, 1
+	bnez $t3, Label_26_Length_String
+	addi $t1, $t1, -1
+	move $t4,$t2
+Label_27_Length_String:
+	lb $t3, 0($t4)
+	addi $t1, $t1, 1
+	addi $t4, $t4, 1
+	bnez $t3, Label_27_Length_String
+	addi $t1, $t1, -1
+	addi $sp, $sp, -4
+	sw $a0, 0($sp)
+	addi $a0, $t1, 0
+	li $v0, 9
+	syscall
+	addi $t1, $v0, 0
+	lw $a0, 0($sp)
+	addi $sp, $sp, 4
+	move $t5,$t1
+	move $t4,$t0
+Label_28_Concat_String1:
+	lb $t3, 0($t4)
+	sb $t3, 0($t5)
+	addi $t4, $t4, 1
+	addi $t5, $t5, 1
+	bnez $t3, Label_28_Concat_String1
+	addi $t5, $t5, -1
+	move $t4,$t2
+Label_29_Concat_String1:
+	lb $t3, 0($t4)
+	sb $t3, 0($t5)
+	addi $t4, $t4, 1
+	addi $t5, $t5, 1
+	bnez $t3, Label_29_Concat_String1
+	addi $t5, $t5, -1
+	la $t2, Label_6_StringLiteral
+	li $t0,1
+	move $t4,$t1
+Label_30_Length_String:
+	lb $t3, 0($t4)
+	addi $t0, $t0, 1
+	addi $t4, $t4, 1
+	bnez $t3, Label_30_Length_String
+	addi $t0, $t0, -1
+	move $t4,$t2
+Label_31_Length_String:
+	lb $t3, 0($t4)
+	addi $t0, $t0, 1
+	addi $t4, $t4, 1
+	bnez $t3, Label_31_Length_String
+	addi $t0, $t0, -1
+	addi $sp, $sp, -4
+	sw $a0, 0($sp)
+	addi $a0, $t0, 0
+	li $v0, 9
+	syscall
+	addi $t0, $v0, 0
+	lw $a0, 0($sp)
+	addi $sp, $sp, 4
+	move $t5,$t0
+	move $t4,$t1
+Label_32_Concat_String1:
+	lb $t3, 0($t4)
+	sb $t3, 0($t5)
+	addi $t4, $t4, 1
+	addi $t5, $t5, 1
+	bnez $t3, Label_32_Concat_String1
+	addi $t5, $t5, -1
+	move $t4,$t2
+Label_33_Concat_String1:
+	lb $t3, 0($t4)
+	sb $t3, 0($t5)
+	addi $t4, $t4, 1
+	addi $t5, $t5, 1
+	bnez $t3, Label_33_Concat_String1
+	addi $t5, $t5, -1
+	addi $a0,$t0,0
+	li $v0,4
+	syscall
+	# Deallocating stack for arguments
+	addi $sp, $sp, 4
+	lw $t0, 0($sp)
+	lw $t1, 4($sp)
+	lw $t2, 8($sp)
+	lw $t3, 12($sp)
+	lw $t4, 16($sp)
+	lw $t5, 20($sp)
+	lw $t6, 24($sp)
+	lw $t7, 28($sp)
+	lw $a0, 32($sp)
+	lw $a1, 36($sp)
+	addi $sp, $sp, 40
+	move $t0, $v0
+Label_8_Func_main_end:
+	addi $sp, $sp, 12
+	lw	$fp, ($sp)
+	lw	$ra, 4($sp)
+	addi $sp, $sp, 8
+	li $v0,10
+	syscall
